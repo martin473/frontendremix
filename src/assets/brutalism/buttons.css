@@ -1,0 +1,6 @@
+/* Brutalism - buttons */
+button,.btn,[type=button],[type=submit]{background:var(--accent-1)!important;color:var(--ink)!important;border:3px solid var(--ink)!important;box-shadow:6px 6px 0 var(--ink)!important;font-weight:700!important;text-transform:uppercase!important;letter-spacing:0.02em!important;padding:10px 16px!important;cursor:pointer!important;transition:transform .06s ease,box-shadow .06s ease!important;}
+button:hover,.btn:hover{background:var(--accent-3)!important;}
+button:active,.btn:active{transform:translate(3px,3px)!important;box-shadow:3px 3px 0 var(--ink)!important;}
+button:focus-visible,.btn:focus-visible,a:focus-visible{outline:3px solid var(--accent-2)!important;outline-offset:2px!important;}
+@media (prefers-reduced-motion: reduce){button,.btn{transition:none!important;}}
