@@ -1,0 +1,10 @@
+/* Swiss typography tokens */
+:root{
+  --ink:#111;--paper:#FFFFFF;--grey:#E6E6E6;--muted:#6B6B6B;--accent:#E30613;
+  --frx-font:'Helvetica Neue',Helvetica,Inter,Arial,sans-serif;
+}
+body{font-family:var(--frx-font)!important;background:var(--paper)!important;color:var(--ink)!important;line-height:1.45!important;}
+h1,h2,h3,h4,h5,h6{font-family:var(--frx-font)!important;font-weight:700!important;letter-spacing:-0.02em!important;line-height:1.05!important;text-align:left!important;}
+p,li,span,div,a,button,input,textarea,label,td,th{font-family:var(--frx-font)!important;text-align:left!important;}
+a{color:var(--accent)!important;text-decoration:none!important;}
+a:hover{text-decoration:underline!important;}

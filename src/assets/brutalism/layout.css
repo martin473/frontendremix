@@ -1,0 +1,4 @@
+/* Brutalism - 12-col grid, section rules */
+body{max-width:1280px!important;margin:0 auto!important;padding:var(--frx-space-4)!important;}
+main,section,.container,.wrapper{display:block!important;width:100%!important;}
+[class*=grid]{display:grid!
