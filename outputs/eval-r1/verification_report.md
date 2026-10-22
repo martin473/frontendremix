@@ -10,4 +10,4 @@
 - FAIL - `required_files_present`: missing: manifest.json
 
 ## Artifacts
-- `README.md` (182 bytes)
+- `README.md` (462 bytes)
