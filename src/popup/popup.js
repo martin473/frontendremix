@@ -49,10 +49,89 @@
       });
     });
   }
+  // Fonts the user imported from their Mac (every installed family) - see the
+  // "Import all my fonts" panel. Saved in extension storage, so it's a one-time step.
+  let importedFonts = [];
+  async function loadImportedFonts() {
+    try {
+      const got = await api.storage.local.get("frxImportedFonts");
+      importedFonts = Array.isArray(got.frxImportedFonts) ? got.frxImportedFonts : [];
+    } catch (e) { importedFonts = []; }
+  }
   let systemFonts = null;
   function getSystemFonts() {
-    if (!systemFonts) systemFonts = detectInstalledFonts();
+    if (!systemFonts) {
+      const set = new Set(importedFonts.concat(detectInstalledFonts()));
+      systemFonts = Array.from(set).sort(function (a, b) {
+        const ga = GENERIC.has(a), gb = GENERIC.has(b);
+        if (ga !== gb) return ga ? 1 : -1;            // generic families last
+        return a.localeCompare(b, undefined, { sensitivity: "base" });
+      });
+    }
     return systemFonts;
+  }
+  function cssFamily(name) { return GENERIC.has(name) ? name : '"' + name.replace(/"/g, "") + '"'; }
+
+  // ---- searchable font picker, every name drawn in its own typeface
+  let openPanel = null;
+  function closePanel() { if (openPanel) { openPanel.remove(); openPanel = null; } }
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closePanel(); });
+
+  function buildPicker(font, onPick) {
+    const wrap = el("div", "frx-pick");
+    const btn = el("button", "frx-input frx-pick-btn");
+    btn.type = "button";
+    let chosen = font.overrideSystem || "";
+    function paintBtn() {
+      btn.textContent = chosen || "Pick a font\u2026";
+      btn.style.fontFamily = chosen ? cssFamily(chosen) : "";
+    }
+    paintBtn();
+    btn.addEventListener("click", function () {
+      if (openPanel && openPanel.parentNode === wrap) { closePanel(); return; }
+      closePanel();
+      const panel = el("div", "frx-pick-panel");
+      const search = el("input", "frx-input frx-pick-search");
+      search.type = "search";
+      const all = getSystemFonts();
+      search.placeholder = "Search " + all.length + " fonts\u2026";
+      const list = el("ul", "frx-pick-list");
+      // only style rows once they scroll into view: thousands of fonts stay fast
+      const io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.style.fontFamily = cssFamily(en.target.dataset.font); io.unobserve(en.target); }
+        });
+      }, { root: list });
+      function render() {
+        const q = search.value.trim().toLowerCase();
+        list.innerHTML = "";
+        const hits = q ? all.filter(function (n) { return n.toLowerCase().indexOf(q) !== -1; }) : all;
+        hits.slice(0, 500).forEach(function (name) {
+          const li = el("li", "frx-pick-item" + (name === chosen ? " frx-pick-item--on" : ""), name);
+          li.dataset.font = name;
+          li.title = name;
+          li.addEventListener("click", function () {
+            chosen = name; paintBtn(); closePanel(); onPick(name);
+          });
+          list.appendChild(li);
+          io.observe(li);
+        });
+        if (!hits.length) list.appendChild(el("li", "frx-pick-empty", "No installed font matches \u201c" + search.value + "\u201d"));
+        else if (hits.length > 500) list.appendChild(el("li", "frx-pick-empty", (hits.length - 500) + " more \u2014 keep typing to narrow down"));
+      }
+      search.addEventListener("input", render);
+      search.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") { e.preventDefault(); const first = list.querySelector(".frx-pick-item"); if (first) first.click(); }
+      });
+      panel.appendChild(search);
+      panel.appendChild(list);
+      wrap.appendChild(panel);
+      openPanel = panel;
+      render();
+      search.focus();
+    });
+    wrap.appendChild(btn);
+    return { node: wrap, value: function () { return chosen; } };
   }
 
   function setStatus(message, kind) {
@@ -128,30 +207,16 @@
     const rowError = el("div", "frx-row-error");
     rowError.hidden = true;
     const form = el("form", "frx-form");
-    const picker = el("select", "frx-input frx-picker");
-    picker.setAttribute("aria-label", "System font for " + font.name);
-    const ph = el("option", null, "Pick a system font\u2026");
-    ph.value = "";
-    picker.appendChild(ph);
-    getSystemFonts().forEach(function (name) {
-      const opt = el("option", null, name);
-      opt.value = name;
-      opt.style.fontFamily = GENERIC.has(name) ? name : '"' + name + '"';
-      if (font.overrideSystem === name) opt.selected = true;
-      picker.appendChild(opt);
-    });
-    picker.addEventListener("change", function () {
-      picker.style.fontFamily = picker.value ? '"' + picker.value + '"' : "";
-    });
-    if (font.overrideSystem) picker.style.fontFamily = '"' + font.overrideSystem + '"';
+    const input = el("input", "frx-input");
+    // picking a font applies it right away (Apply re-applies)
+    const picker = buildPicker(font, function () { input.hidden = true; form.requestSubmit(); });
     const applyBtn = el("button", "frx-btn frx-btn--primary", "Apply");
     applyBtn.type = "submit";
-    form.appendChild(picker);
+    form.appendChild(picker.node);
     form.appendChild(applyBtn);
 
     const urlToggle = el("button", "frx-clear frx-url-toggle", "or use a font URL\u2026");
     urlToggle.type = "button";
-    const input = el("input", "frx-input");
     input.type = "url";
     input.placeholder = "https://fonts.googleapis.com/css2?family=...";
     input.value = font.overrideSystem ? "" : (font.overrideTo || "");
@@ -162,7 +227,7 @@
     form.addEventListener("submit", function (ev) {
       ev.preventDefault();
       const url = input.hidden ? "" : input.value.trim();
-      const sys = picker.value;
+      const sys = picker.value();
       rowError.hidden = true;
       if (!url && !sys) {
         rowError.hidden = false;
@@ -279,5 +344,37 @@
     });
   });
 
-  load();
+  // ---- import every installed font family from the Mac (one-time)
+  const IMPORT_CMD = "system_profiler SPFontsDataType | sed -n 's/^ *Family: //p' | sort -u | pbcopy";
+  const imp = {
+    toggle: document.getElementById("frx-import-toggle"),
+    panel: document.getElementById("frx-import"),
+    cmd: document.getElementById("frx-import-cmd"),
+    copy: document.getElementById("frx-import-copy"),
+    text: document.getElementById("frx-import-text"),
+    save: document.getElementById("frx-import-save"),
+    note: document.getElementById("frx-import-note")
+  };
+  function paintImportToggle() {
+    imp.toggle.textContent = importedFonts.length
+      ? importedFonts.length + " fonts imported \u2014 update"
+      : "Import all my fonts";
+  }
+  imp.cmd.textContent = IMPORT_CMD;
+  imp.toggle.addEventListener("click", function () { imp.panel.hidden = !imp.panel.hidden; });
+  imp.copy.addEventListener("click", function () {
+    navigator.clipboard.writeText(IMPORT_CMD).then(function () { imp.copy.textContent = "Copied!"; });
+  });
+  imp.save.addEventListener("click", async function () {
+    const names = Array.from(new Set(imp.text.value.split(/\r?\n/).map(function (l) { return l.trim(); })
+      .filter(function (l) { return l && l.length < 120 && !/^[.#]/.test(l); })));
+    if (!names.length) { imp.note.textContent = "Paste the list first (run the command, then Cmd+V here)."; return; }
+    await api.storage.local.set({ frxImportedFonts: names });
+    importedFonts = names; systemFonts = null;
+    imp.note.textContent = "Saved " + names.length + " fonts.";
+    imp.text.value = ""; imp.panel.hidden = true;
+    paintImportToggle(); renderFonts();
+  });
+
+  loadImportedFonts().then(function () { paintImportToggle(); load(); });
 })();

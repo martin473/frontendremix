@@ -19,7 +19,19 @@
     <ul id="frx-list" class="frx-list" hidden></ul>
     <div id="frx-empty" class="frx-empty" hidden>No rendered fonts detected on this page.</div>
   </main>
+  <section id="frx-import" class="frx-import" hidden>
+    <p><strong>See every font on your Mac.</strong> Firefox can't list installed fonts for extensions, so grab the list once:</p>
+    <ol>
+      <li>Open Terminal and run <button id="frx-import-copy" class="frx-clear" type="button">Copy command</button>
+        <code id="frx-import-cmd"></code></li>
+      <li>Paste the result here (Cmd+V) and Save.</li>
+    </ol>
+    <textarea id="frx-import-text" class="frx-input" rows="4" placeholder="Paste your font list here"></textarea>
+    <div class="frx-import-row"><span id="frx-import-note" class="frx-import-note"></span>
+      <button id="frx-import-save" class="frx-btn frx-btn--primary" type="button">Save</button></div>
+  </section>
   <footer class="frx-footer">
+    <button id="frx-import-toggle" class="frx-clear" type="button">Import all my fonts</button>
     <button id="frx-reset" class="frx-btn frx-btn-ghost" disabled>Reset all overrides</button>
   </footer>
   <script src="popup.js"></script>
