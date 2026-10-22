@@ -242,6 +242,38 @@
       },
       "note": null,
       "telemetry": ".forge-runs/20261022-1553-replace-5-style-assets-i/07-build-r2/"
+    },
+    {
+      "seq": 8,
+      "phase": "build-r2",
+      "round": 2,
+      "status": "gave_up",
+      "wall_seconds": 308.6,
+      "trace_id": "d29f916b-0be4-4397-85d1-52a8e5c56ab8",
+      "verdict": null,
+      "checks_passed": 4,
+      "checks_total": 5,
+      "checks_failed": [
+        "javascript_parses"
+      ],
+      "files": {
+        "added": [],
+        "removed": [],
+        "modified": [
+          "content/style-engine.js"
+        ]
+      },
+      "file_count": 9,
+      "agent": {
+        "steps": 15,
+        "tool_calls_total": 10,
+        "plain_text_retries": 5,
+        "invalid_args": 0,
+        "ended": "gave_up_no_tool_format",
+        "health": "degraded: 5 plain-text replies, 2 echoed replies"
+      },
+      "note": "attempt 2/2",
+      "telemetry": ".forge-runs/20261022-1553-replace-5-style-assets-i/08-build-r2/"
     }
   ],
   "outcome": null,
