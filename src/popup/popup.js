@@ -61,26 +61,3 @@
     return node;
   }
 
-  function buildItem(font) {
-    const li = el("li", "frx-item" + (font.overridden ? " frx-item--active" : ""));
-    const head = el("div", "frx-item-head");
-    const titleWrap = el("div", "frx-font-title");
-    titleWrap.appendChild(el("div", "frx-font-name", font.name));
-    const meta = el("div", "frx-font-meta");
-    if (font.source) {
-      const a = el("a", null, font.source);
-      a.href = font.source;
-      a.title = font.source;
-      a.target = "_blank";
-      a.rel = "noreferrer noopener";
-      meta.textContent = "Source: ";
-      meta.appendChild(a);
-    } else {
-      meta.textContent = "No source URL found (local/system font)";
-    }
-    titleWrap.appendChild(meta);
-    head.appendChild(titleWrap);
-    head.appendChild(el("span", font.overridden ? "frx-badge frx-badge--active" : "frx-badge frx-badge--count", font.overridden ? "Overridden" : font.count + " el"));
-    li.appendChild(head);
-    return li;
-  }
