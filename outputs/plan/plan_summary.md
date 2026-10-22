@@ -1,10 +1,10 @@
 # Phase: plan
 
 **Status:** success  
-**Latency:** 135.1s  
-**Turns:** 20  
-**Trace:** f0f217a4-9e60-447f-8d52-c5ebdcf30195  
-**Timestamp:** 2026-10-22T02:50:41.051814
+**Latency:** 123.8s  
+**Turns:** 18  
+**Trace:** db54aeb1-5712-431d-b202-750f7454b926  
+**Timestamp:** 2026-10-22T02:56:46.194943
 
 **Artifacts produced:** 1
 
@@ -17,4 +17,6 @@ Rules:
 3. Do not merely describe the code - actually create the files.
 4. Verify your files exist by running `ls -la` in the working directory.
 
-Task: Build the Frontend Remix Firefox extension (WebExtension with manifest.json, content script, background script, popup) exactly as specified in the design doc, covering every item in the 
+Task: Build the Frontend Remix Firefox extension exactly as specified in the design doc, covering every item in the MVP Scope Checklist.
+
+Produce a concrete, ordered implementation plan with t
