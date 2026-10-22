@@ -1,0 +1,39 @@
+{
+  "steps": 30,
+  "tool_calls": {
+    "read_file": 12,
+    "run_command": 1,
+    "write_file": 3,
+    "replace_in_file": 6
+  },
+  "tool_errors": {
+    "replace_in_file": 3
+  },
+  "invalid_args": 3,
+  "plain_text_retries": 8,
+  "gave_up_no_tool_format": true,
+  "loop_warnings": 0,
+  "delayed_responses": 1,
+  "placeholder_tool_calls": 0,
+  "task_complete": false,
+  "signed_out": false,
+  "writes": [
+    864.0,
+    272.0,
+    14.0
+  ],
+  "appends": [],
+  "responses": {
+    "count": 30,
+    "median_chars": 206,
+    "p90_chars": 504,
+    "echo_of_own_message": 9,
+    "same_as_previous_reply": 2,
+    "stable_after_one_poll": 30
+  },
+  "tool_calls_total": 22,
+  "write_bytes": 1150,
+  "append_bytes": 0,
+  "ended": "gave_up_no_tool_format",
+  "health": "degraded: 8 plain-text replies, 9 echoed replies, 2 stale replies, 3 malformed tool args"
+}
