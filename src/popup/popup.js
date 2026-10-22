@@ -153,3 +153,63 @@
     li.appendChild(rowError);
     return li;
   }
+
+  function renderFonts() {
+    els.list.innerHTML = "";
+    if (!fonts.length) {
+      showState("empty");
+      els.reset.disabled = true;
+      return;
+    }
+    showState("list");
+    fonts.forEach(function (font) {
+      els.list.appendChild(buildItem(font));
+    });
+    updateResetState();
+  }
+
+  async function load() {
+    showState("loading");
+    if (tabId === null) {
+      const tab = await bgSend({ type: "FRX_BG_GET_TAB" });
+      if (!tab || !tab.ok) {
+        showState("empty");
+        els.title.textContent = "Cannot access this page";
+        setStatus((tab && tab.error) || "This page cannot be remixed.", "error");
+        return;
+      }
+      tabId = tab.tabId;
+      els.title.textContent = tab.title || tab.url || "Current page";
+      els.title.title = tab.url || "";
+    }
+    const res = await toContent({ type: "FRX_SCAN_FONTS" });
+    if (!res || !res.ok) {
+      fonts = [];
+      showState("empty");
+      setStatus((res && res.error) || "Unable to scan this page.", "error");
+      return;
+    }
+    fonts = res.fonts || [];
+    setStatus("", null);
+    renderFonts();
+  }
+
+  els.refresh.addEventListener("click", function () {
+    load();
+  });
+
+  els.reset.addEventListener("click", function () {
+    els.reset.disabled = true;
+    toContent({ type: "FRX_RESET_ALL" }).then(function (resp) {
+      if (resp && resp.ok) {
+        setStatus("All overrides cleared.", "info");
+        load();
+      } else {
+        els.reset.disabled = false;
+        setStatus((resp && resp.error) || "Failed to reset.", "error");
+      }
+    });
+  });
+
+  load();
+})();
