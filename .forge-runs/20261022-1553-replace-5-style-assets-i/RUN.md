@@ -12,5 +12,6 @@
 | 2 | plan | success | 947s | 48 | degraded: 2 echoed replies, 1 stale replies, 1 malformed tool args, 6 append chunks | task_complete | 4/5 |  | 0/0/0 |
 | 3 | build-r1 | gave_up | 591s | 30 | degraded: 8 plain-text replies, 9 echoed replies, 2 stale replies, 3 malformed tool args | gave_up_no_tool_format | 3/5 |  | 0/5/0 |
 | 4 | build-r1 | gave_up | 103s | 4 | degraded: 3 plain-text replies | gave_up_no_tool_format | 3/5 |  | 0/0/0 |
+| 5 | eval-r1 | gave_up | 121s | 5 | degraded: 3 plain-text replies | gave_up_no_tool_format | 3/5 | UNREADABLE | 0/0/0 |
 
 Failing checks at the end: manifest_json_valid, javascript_parses

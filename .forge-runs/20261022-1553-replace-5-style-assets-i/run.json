@@ -148,6 +148,37 @@
       },
       "note": "attempt 2/2",
       "telemetry": ".forge-runs/20261022-1553-replace-5-style-assets-i/04-build-r1/"
+    },
+    {
+      "seq": 5,
+      "phase": "eval-r1",
+      "round": 1,
+      "status": "gave_up",
+      "wall_seconds": 120.9,
+      "trace_id": "99a72e08-ca92-439e-942a-ef0b8a1e1472",
+      "verdict": "UNREADABLE",
+      "checks_passed": 3,
+      "checks_total": 5,
+      "checks_failed": [
+        "manifest_json_valid",
+        "javascript_parses"
+      ],
+      "files": {
+        "added": [],
+        "removed": [],
+        "modified": []
+      },
+      "file_count": 9,
+      "agent": {
+        "steps": 5,
+        "tool_calls_total": 2,
+        "plain_text_retries": 3,
+        "invalid_args": 0,
+        "ended": "gave_up_no_tool_format",
+        "health": "degraded: 3 plain-text replies"
+      },
+      "note": null,
+      "telemetry": ".forge-runs/20261022-1553-replace-5-style-assets-i/05-eval-r1/"
     }
   ],
   "outcome": null,
