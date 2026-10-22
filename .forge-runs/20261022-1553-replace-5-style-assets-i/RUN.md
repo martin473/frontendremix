@@ -16,5 +16,4 @@
 | 6 | eval-r1 | gave_up | 453s | 23 | degraded: 11 plain-text replies, 12 echoed replies, 3 stale replies, placeholder TOOL_NAME calls | gave_up_no_tool_format | 3/5 | UNREADABLE | 0/0/0 |
 | 7 | build-r2 | gave_up | 385s | 19 | degraded: 7 plain-text replies, 8 echoed replies, 1 stale replies, placeholder TOOL_NAME calls | gave_up_no_tool_format | 4/5 |  | 0/1/0 |
 | 8 | build-r2 | gave_up | 309s | 15 | degraded: 5 plain-text replies, 2 echoed replies | gave_up_no_tool_format | 4/5 |  | 0/1/0 |
-
-Failing checks at the end: javascript_parses
+| 9 | eval-r2 | timeout | 1207s | 62 | degraded: 15 plain-text replies, 21 echoed replies, 1 stale replies, 3 malformed tool args, 17 append chunks | cut_off_or_crashed | 5/5 | UNREADABLE | 21/3/0 |

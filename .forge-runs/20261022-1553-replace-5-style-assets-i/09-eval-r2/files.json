@@ -1,0 +1,152 @@
+[
+  {
+    "path": "assets/bento/icons/arrow.svg",
+    "bytes": 150,
+    "sha1": "5918b1c2e30b"
+  },
+  {
+    "path": "assets/bento/icons/check.svg",
+    "bytes": 143,
+    "sha1": "5a0bfb6418e3"
+  },
+  {
+    "path": "assets/bento/icons/close.svg",
+    "bytes": 149,
+    "sha1": "4248dc616ac9"
+  },
+  {
+    "path": "assets/bento/icons/settings.svg",
+    "bytes": 190,
+    "sha1": "659846acc89d"
+  },
+  {
+    "path": "assets/brutalism/fonts.css",
+    "bytes": 59,
+    "sha1": "26ed1a255ed5"
+  },
+  {
+    "path": "assets/brutalism/icons/arrow.svg",
+    "bytes": 150,
+    "sha1": "5918b1c2e30b"
+  },
+  {
+    "path": "assets/brutalism/icons/check.svg",
+    "bytes": 143,
+    "sha1": "5a0bfb6418e3"
+  },
+  {
+    "path": "assets/brutalism/icons/close.svg",
+    "bytes": 149,
+    "sha1": "4248dc616ac9"
+  },
+  {
+    "path": "assets/brutalism/icons/settings.svg",
+    "bytes": 190,
+    "sha1": "659846acc89d"
+  },
+  {
+    "path": "assets/editorial/icons/arrow.svg",
+    "bytes": 150,
+    "sha1": "5918b1c2e30b"
+  },
+  {
+    "path": "assets/editorial/icons/check.svg",
+    "bytes": 143,
+    "sha1": "5a0bfb6418e3"
+  },
+  {
+    "path": "assets/editorial/icons/close.svg",
+    "bytes": 149,
+    "sha1": "4248dc616ac9"
+  },
+  {
+    "path": "assets/editorial/icons/settings.svg",
+    "bytes": 190,
+    "sha1": "659846acc89d"
+  },
+  {
+    "path": "assets/retro-y2k/icons/arrow.svg",
+    "bytes": 150,
+    "sha1": "5918b1c2e30b"
+  },
+  {
+    "path": "assets/retro-y2k/icons/check.svg",
+    "bytes": 143,
+    "sha1": "5a0bfb6418e3"
+  },
+  {
+    "path": "assets/retro-y2k/icons/close.svg",
+    "bytes": 149,
+    "sha1": "4248dc616ac9"
+  },
+  {
+    "path": "assets/retro-y2k/icons/settings.svg",
+    "bytes": 190,
+    "sha1": "659846acc89d"
+  },
+  {
+    "path": "assets/swiss/icons/arrow.svg",
+    "bytes": 150,
+    "sha1": "5918b1c2e30b"
+  },
+  {
+    "path": "assets/swiss/icons/check.svg",
+    "bytes": 143,
+    "sha1": "5a0bfb6418e3"
+  },
+  {
+    "path": "assets/swiss/icons/close.svg",
+    "bytes": 149,
+    "sha1": "4248dc616ac9"
+  },
+  {
+    "path": "assets/swiss/icons/settings.svg",
+    "bytes": 190,
+    "sha1": "659846acc89d"
+  },
+  {
+    "path": "background/background.js",
+    "bytes": 4764,
+    "sha1": "0ce65c7e850a"
+  },
+  {
+    "path": "content/content.js",
+    "bytes": 11859,
+    "sha1": "5c43b5ec2250"
+  },
+  {
+    "path": "content/style-engine.js",
+    "bytes": 3475,
+    "sha1": "ae7de9ad8022"
+  },
+  {
+    "path": "icons/icon-48.png",
+    "bytes": 513,
+    "sha1": "70468a3754ed"
+  },
+  {
+    "path": "icons/icon-96.png",
+    "bytes": 953,
+    "sha1": "54cb2dd82bc5"
+  },
+  {
+    "path": "manifest.json",
+    "bytes": 904,
+    "sha1": "571a937b6668"
+  },
+  {
+    "path": "popup/popup.css",
+    "bytes": 5656,
+    "sha1": "fe88b18f936f"
+  },
+  {
+    "path": "popup/popup.html",
+    "bytes": 1086,
+    "sha1": "be6d58bdfe67"
+  },
+  {
+    "path": "popup/popup.js",
+    "bytes": 11392,
+    "sha1": "3e95596aa128"
+  }
+]
