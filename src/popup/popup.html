@@ -1,1 +1,35 @@
-<!DOCTYPE html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Frontend Remix</title>
+<link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<header class="frx-header">
+<h1 class="frx-title">Frontend Remix</h1>
+<p id="frx-page-title" class="frx-page-title">Loading…</p>
+</header>
+
+<section class="frx-style-bar">
+<label for="frx-style-picker">Style</label>
+<select id="frx-style-picker" aria-label="Choose a design style">
+<option value="">None</option>
+</select>
+<button id="frx-style-clear" class="frx-btn frx-btn--style" type="button">Clear</button>
+<p id="frx-style-status" class="frx-style-status" role="status"></p>
+</section>
+
+<main class="frx-main">
+<div class="frx-toolbar">
+<button id="frx-refresh" class="frx-btn" type="button">Refresh</button>
+<button id="frx-reset" class="frx-btn frx-btn--danger" type="button">Reset all</button>
+</div>
+<p id="frx-status" class="frx-status" role="status"></p>
+<ul id="frx-list" class="frx-list"></ul>
+</main>
+
+<script src="popup.js"></script>
+</body>
+</html>
