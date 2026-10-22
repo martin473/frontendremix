@@ -1,0 +1,7 @@
+:root{--frx-space-1:32px;--frx-space-2:64px;--frx-space-3:96px;--frx-space-4:128px;}
+body{margin:0!important;}
+p,ul,ol{margin:0 0 1em 0!important;line-height:1.6!important;}
+h1,h2,h3,h4,h5,h6{margin:0 0 var(--frx-space-1) 0!important;}
+section,article{padding:var(--frx-space-1) 0!important;}
+main{padding:var(--frx-space-2) var(--frx-space-1)!important;}
+@media (max-width:768px){main{padding:var(--frx-space-1)!important;}}
