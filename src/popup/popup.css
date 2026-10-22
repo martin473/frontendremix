@@ -53,3 +53,6 @@ body { display: flex; flex-direction: column; max-height: 560px; }
 .frx-item > .frx-input { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; }
 .frx-item > .frx-input[hidden] { display: none; }
 .frx-url-toggle { margin-top: 4px; padding-left: 0; }
+
+.frx-style-bar { flex: 0 0 auto; padding: 10px 12px; border-bottom: 1px solid var(--frx-border); background: var(--frx-panel-2); display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.frx-style-bar label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--frx-muted); }
