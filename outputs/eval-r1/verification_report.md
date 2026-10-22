@@ -1,20 +1,22 @@
 # Build Verification Report
 
-**Overall:** PASS
+**Overall:** FAIL
 
 ## Checks
-- PASS - `files_written`: 8 file(s) in build dir
-- PASS - `manifest_json_valid`: valid JSON, name=Frontend Remix, version=1.0.0
+- PASS - `files_written`: 9 file(s) in build dir
+- FAIL - `manifest_json_valid`: invalid JSON: Unterminated string starting at: line 5 column 18 (char 94)
 - PASS - `no_empty_sources`: all source files non-empty
-- PASS - `javascript_parses`: all 3 JS file(s) parse OK
+- FAIL - `javascript_parses`: content/style-engine.js: /opt/forge-working/build/content/style-engine.js:16
+function applyIcons(s){var css='';for(var i=0;i<ICONS.length;i++){va
 - PASS - `required_files_present`: all present
 
 ## Artifacts
-- `background/background.js` (1800 bytes)
-- `content/content.js` (8343 bytes)
+- `background/background.js` (4764 bytes)
+- `content/content.js` (11340 bytes)
+- `content/style-engine.js` (3206 bytes)
 - `icons/icon-48.png` (513 bytes)
 - `icons/icon-96.png` (953 bytes)
-- `manifest.json` (905 bytes)
-- `popup/popup.css` (4299 bytes)
-- `popup/popup.html` (993 bytes)
-- `popup/popup.js` (7099 bytes)
+- `manifest.json` (168 bytes)
+- `popup/popup.css` (7274 bytes)
+- `popup/popup.html` (1829 bytes)
+- `popup/popup.js` (15828 bytes)
