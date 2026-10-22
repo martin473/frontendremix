@@ -56,3 +56,10 @@ body { display: flex; flex-direction: column; max-height: 560px; }
 
 .frx-style-bar { flex: 0 0 auto; padding: 10px 12px; border-bottom: 1px solid var(--frx-border); background: var(--frx-panel-2); display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .frx-style-bar label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--frx-muted); }
+#frx-style-picker { flex: 1 1 auto; min-width: 0; padding: 7px 9px; font-size: 13px; font-family: inherit; color: var(--frx-text); background: var(--frx-bg); border: 1px solid var(--frx-border); border-radius: 7px; cursor: pointer; }
+#frx-style-picker:focus { border-color: var(--frx-accent); }
+.frx-btn--style { background: var(--frx-panel); color: var(--frx-text); border-color: var(--frx-border); }
+.frx-btn--danger { background: transparent; color: var(--frx-bad); border-color: var(--frx-bad); }
+.frx-btn--danger:hover:not(:disabled) { background: rgba(255,92,92,0.12); }
+.frx-style-status { flex: 1 1 100%; margin: 0; font-size: 11px; color: var(--frx-muted); min-height: 13px; }
+@media (prefers-reduced-motion: reduce) { .frx-style-bar *, #frx-style-picker { transition: none !important; } }
