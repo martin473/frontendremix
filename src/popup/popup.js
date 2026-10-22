@@ -98,3 +98,58 @@
     form.appendChild(applyBtn);
     form.addEventListener("submit", function (ev) {
       ev.preventDefault();
+      const url = input.value.trim();
+      rowError.hidden = true;
+      if (!url) {
+        rowError.hidden = false;
+        rowError.textContent = "Enter a font URL first.";
+        return;
+      }
+      applyBtn.disabled = true;
+      applyBtn.textContent = "Applying...";
+      toContent({ type: "FRX_APPLY_OVERRIDE", fontName: font.name, fontUrl: url }).then(function (resp) {
+        applyBtn.disabled = false;
+        applyBtn.textContent = "Apply";
+        if (resp && resp.ok) {
+          setStatus("Remixed " + font.name + ".", "ok");
+          load();
+        } else {
+          rowError.hidden = false;
+          rowError.textContent = (resp && resp.error) || "Failed to apply override.";
+        }
+      });
+    });
+    li.appendChild(form);
+    const actions = el("div", "frx-item-actions");
+    const current = el("span", "frx-current");
+    if (font.overridden && font.overrideTo) {
+      current.textContent = "Now: " + String(font.overrideTo).replace(/^https?:\/\//, "");
+      current.title = font.overrideTo;
+    } else if (font.overridden) {
+      current.textContent = "Override active";
+    } else {
+      current.textContent = font.count + " element" + (font.count === 1 ? "" : "s") + " using this font";
+    }
+    actions.appendChild(current);
+    if (font.overridden) {
+      const clearBtn = el("button", "frx-clear", "Clear");
+      clearBtn.type = "button";
+      clearBtn.addEventListener("click", function () {
+        clearBtn.disabled = true;
+        toContent({ type: "FRX_CLEAR_OVERRIDE", fontName: font.name }).then(function (resp) {
+          clearBtn.disabled = false;
+          if (resp && resp.ok) {
+            setStatus("Reverted " + font.name + ".", "info");
+            load();
+          } else {
+            rowError.hidden = false;
+            rowError.textContent = (resp && resp.error) || "Failed to clear override.";
+          }
+        });
+      });
+      actions.appendChild(clearBtn);
+    }
+    li.appendChild(actions);
+    li.appendChild(rowError);
+    return li;
+  }
