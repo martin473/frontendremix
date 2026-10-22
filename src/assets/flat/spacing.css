@@ -1,0 +1,10 @@
+/* Flat - spacing scale (8px grid) */
+html[data-frx-style="flat"] {
+  --frx-unit: 8px;
+  --frx-gap: 16px;
+  --frx-margin-base: 16px;
+  --frx-radius: 0;
+}
+html[data-frx-style="flat"] h1, html[data-frx-style="flat"] h2, html[data-frx-style="flat"] h3, html[data-frx-style="flat"] h4, html[data-frx-style="flat"] h5, html[data-frx-style="flat"] h6 { margin-top: calc(var(--frx-unit) * 3) !important; margin-bottom: var(--frx-unit) !important; }
+html[data-frx-style="flat"] p, html[data-frx-style="flat"] ul, html[data-frx-style="flat"] ol, html[data-frx-style="flat"] blockquote { margin-bottom: var(--frx-margin-base) !important; }
+html[data-frx-style="flat"] :is(article, html[data-frx-style="flat"] [class*="card" i], html[data-frx-style="flat"] [class*="panel" i]) > :is(h1, html[data-frx-style="flat"] h2, html[data-frx-style="flat"] h3, html[data-frx-style="flat"] h4, html[data-frx-style="flat"] h5, html[data-frx-style="flat"] h6):first-child { margin-top: 0 !important; }

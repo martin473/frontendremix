@@ -1,0 +1,8 @@
+/* Frutiger Aero - layout: page surface + card / section treatment */
+html[data-frx-style="frutiger-aero"] body { background: linear-gradient(180deg, #e8f6ff 0%, #bfe3ff 45%, #e9f9e9 100%) fixed !important; color: #12324d !important; }
+html[data-frx-style="frutiger-aero"] article, html[data-frx-style="frutiger-aero"] [class*="card" i], html[data-frx-style="frutiger-aero"] [class*="panel" i] {
+  background: rgba(255,255,255,.55) !important; box-shadow: 0 8px 24px rgba(30,110,190,.18), inset 0 1px 0 rgba(255,255,255,.8) !important;
+  border: 1px solid rgba(255,255,255,.8) !important;
+}
+html[data-frx-style="frutiger-aero"] article, html[data-frx-style="frutiger-aero"] [class*="card" i] { padding: calc(var(--frx-unit) * 1.5) !important; }
+html[data-frx-style="frutiger-aero"] ul[class], html[data-frx-style="frutiger-aero"] ol[class] { gap: var(--frx-unit); }

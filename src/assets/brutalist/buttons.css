@@ -1,0 +1,12 @@
+/* Brutalist - buttons */
+html[data-frx-style="brutalist"] button, html[data-frx-style="brutalist"] input[type="button"], html[data-frx-style="brutalist"] input[type="submit"], html[data-frx-style="brutalist"] input[type="reset"], html[data-frx-style="brutalist"] [role="button"], html[data-frx-style="brutalist"] a.btn, html[data-frx-style="brutalist"] a.button, html[data-frx-style="brutalist"] .btn, html[data-frx-style="brutalist"] .button {
+  background: #ffff00 !important; color: #000000 !important;
+  border: 4px solid #000000 !important; border-radius: 0 !important;
+  box-shadow: 6px 6px 0 #000000 !important; font-weight: 900 !important;
+  padding: var(--frx-unit) calc(var(--frx-unit) * 2) !important;
+  font-family: "Courier New", Courier, monospace !important; cursor: pointer !important;
+  transition: background .15s, transform .1s, box-shadow .15s !important;
+  text-transform: uppercase !important;
+}
+html[data-frx-style="brutalist"] button:hover, html[data-frx-style="brutalist"] input[type="button"]:hover, html[data-frx-style="brutalist"] input[type="submit"]:hover, html[data-frx-style="brutalist"] input[type="reset"]:hover, html[data-frx-style="brutalist"] [role="button"]:hover, html[data-frx-style="brutalist"] a.btn:hover, html[data-frx-style="brutalist"] a.button:hover, html[data-frx-style="brutalist"] .btn:hover, html[data-frx-style="brutalist"] .button:hover { background: #ff3b00 !important; }
+html[data-frx-style="brutalist"] button:active, html[data-frx-style="brutalist"] input[type="button"]:active, html[data-frx-style="brutalist"] input[type="submit"]:active, html[data-frx-style="brutalist"] input[type="reset"]:active, html[data-frx-style="brutalist"] [role="button"]:active, html[data-frx-style="brutalist"] a.btn:active, html[data-frx-style="brutalist"] a.button:active, html[data-frx-style="brutalist"] .btn:active, html[data-frx-style="brutalist"] .button:active { transform: translateY(2px) !important; }

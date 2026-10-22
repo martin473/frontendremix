@@ -1,0 +1,12 @@
+/* Claymation - buttons */
+html[data-frx-style="claymation"] button, html[data-frx-style="claymation"] input[type="button"], html[data-frx-style="claymation"] input[type="submit"], html[data-frx-style="claymation"] input[type="reset"], html[data-frx-style="claymation"] [role="button"], html[data-frx-style="claymation"] a.btn, html[data-frx-style="claymation"] a.button, html[data-frx-style="claymation"] .btn, html[data-frx-style="claymation"] .button {
+  background: #e98a6b !important; color: #3b2a1e !important;
+  border: 3px solid #5b4636 !important; border-radius: 18px !important;
+  box-shadow: 0 5px 0 #5b4636, 0 8px 14px rgba(91,70,54,.25) !important; font-weight: 700 !important;
+  padding: var(--frx-unit) calc(var(--frx-unit) * 2) !important;
+  font-family: "Comic Sans MS", "Chalkboard SE", "Marker Felt", "Arial Rounded MT Bold", sans-serif !important; cursor: pointer !important;
+  transition: background .15s, transform .1s, box-shadow .15s !important;
+  
+}
+html[data-frx-style="claymation"] button:hover, html[data-frx-style="claymation"] input[type="button"]:hover, html[data-frx-style="claymation"] input[type="submit"]:hover, html[data-frx-style="claymation"] input[type="reset"]:hover, html[data-frx-style="claymation"] [role="button"]:hover, html[data-frx-style="claymation"] a.btn:hover, html[data-frx-style="claymation"] a.button:hover, html[data-frx-style="claymation"] .btn:hover, html[data-frx-style="claymation"] .button:hover { background: #f2a283 !important; }
+html[data-frx-style="claymation"] button:active, html[data-frx-style="claymation"] input[type="button"]:active, html[data-frx-style="claymation"] input[type="submit"]:active, html[data-frx-style="claymation"] input[type="reset"]:active, html[data-frx-style="claymation"] [role="button"]:active, html[data-frx-style="claymation"] a.btn:active, html[data-frx-style="claymation"] a.button:active, html[data-frx-style="claymation"] .btn:active, html[data-frx-style="claymation"] .button:active { transform: translateY(2px) !important; }

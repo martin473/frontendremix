@@ -68,7 +68,8 @@
     const counts = new Map();
     const samples = new Map();
     const elements = document.querySelectorAll(
-      "body, body *:not(script):not(style):not(link):not(meta):not(head)"
+      "body, body *:not(script):not(style):not(link):not(meta):not(head):not(img):not(svg):not(svg *)" +
+      ":not(video):not(audio):not(canvas):not(iframe):not(picture):not(source):not(br):not(hr)"
     );
     const limit = 4000;
     let inspected = 0;
@@ -208,7 +209,8 @@
     let css = "";
     for (const [key, rec] of overrides.entries()) {
       const attr = "data-frx-" + cssSafe(key);
-      css += "[" + attr + "] { font-family: " + rec.target + " !important; }\n";
+      // tripled attribute = specificity 0,3,0, so a per-font pick beats a page style's fonts
+      css += "[" + attr + "][" + attr + "][" + attr + "] { font-family: " + rec.target + " !important; }\n";
     }
     el.textContent = css;
     tagElements();
@@ -276,6 +278,61 @@
     }
   }
 
+  // ---- page style: flag <html> (all bundle CSS is scoped to it) + swap common icons
+  let currentStyle = "";
+  const ICON_HINTS = [
+    ["check", /check|tick|done|success|confirm/i],
+    ["close", /close|dismiss|remove|cancel|cross|x-mark/i],
+    ["settings", /setting|gear|cog|config|prefer/i],
+    ["arrow", /arrow|next|prev|chevron|caret|forward|back/i]
+  ];
+  function guessIcon(el) {
+    const hay = [el.getAttribute("alt"), el.getAttribute("title"), el.getAttribute("aria-label"),
+                 el.getAttribute("src"), el.getAttribute("class")].join(" ");
+    for (const h of ICON_HINTS) if (h[1].test(hay)) return h[0];
+    return null;
+  }
+  function restoreIcons() {
+    document.querySelectorAll("img[data-frx-orig-src]").forEach(function (img) {
+      img.setAttribute("src", img.getAttribute("data-frx-orig-src"));
+      if (img.hasAttribute("data-frx-orig-srcset")) img.setAttribute("srcset", img.getAttribute("data-frx-orig-srcset"));
+      img.removeAttribute("data-frx-orig-src");
+      img.removeAttribute("data-frx-orig-srcset");
+    });
+  }
+  function swapIcons(style) {
+    let n = 0;
+    const imgs = document.querySelectorAll("img");
+    for (let i = 0; i < imgs.length && i < 800; i++) {
+      const img = imgs[i];
+      const w = img.width || img.naturalWidth || 0, h = img.height || img.naturalHeight || 0;
+      if (!w || !h || w > 48 || h > 48) continue;           // icons only
+      const kind = guessIcon(img);
+      if (!kind) continue;
+      if (!img.hasAttribute("data-frx-orig-src")) {
+        img.setAttribute("data-frx-orig-src", img.getAttribute("src") || "");
+        if (img.hasAttribute("srcset")) img.setAttribute("data-frx-orig-srcset", img.getAttribute("srcset"));
+      }
+      img.removeAttribute("srcset");
+      img.setAttribute("src", api.runtime.getURL("assets/" + style + "/icons/" + kind + ".svg"));
+      n++;
+    }
+    return n;
+  }
+  function applyStyle(style) {
+    restoreIcons();
+    if (!style) {
+      document.documentElement.removeAttribute("data-frx-style");
+      currentStyle = "";
+      return { ok: true, style: "", icons: 0 };
+    }
+    document.documentElement.setAttribute("data-frx-style", style);
+    currentStyle = style;
+    let icons = 0;
+    try { icons = swapIcons(style); } catch (e) { /* icons are best-effort */ }
+    return { ok: true, style: style, icons: icons };
+  }
+
   function handleMessage(msg) {
     if (!msg || typeof msg.type !== "string") return { ok: false, error: "Invalid message" };
     try {
@@ -297,6 +354,10 @@
           return { ok: true };
         case "FRX_PING":
           return { ok: true };
+        case "FRX_APPLY_STYLE":
+          return applyStyle(msg.style || "");
+        case "FRX_GET_STYLE":
+          return { ok: true, style: currentStyle };
         default:
           return { ok: false, error: "Unknown message: " + msg.type };
       }

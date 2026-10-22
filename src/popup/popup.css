@@ -84,3 +84,23 @@ body { display: flex; flex-direction: column; max-height: 560px; }
 .frx-font-meta a { color: var(--frx-accent); }
 .frx-current { flex: 1 1 auto; font-size: 11px; color: var(--frx-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .frx-row-error { margin-top: 6px; font-size: 11px; color: var(--frx-bad); }
+/* page styles */
+.frx-styles { padding: 10px 12px 8px; border-bottom: 1px solid var(--frx-border); background: var(--frx-bg); }
+.frx-styles-head { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--frx-muted); margin-bottom: 7px; }
+.frx-style-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.frx-style { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 6px 2px 5px; font-size: 10.5px; font-family: inherit; color: var(--frx-text); background: var(--frx-panel); border: 1px solid var(--frx-border); border-radius: 8px; cursor: pointer; }
+.frx-style:hover { border-color: var(--frx-muted); }
+.frx-style--on { border-color: var(--frx-accent); box-shadow: 0 0 0 1px var(--frx-accent); }
+.frx-style:disabled { opacity: .6; cursor: progress; }
+.frx-swatch { position: relative; width: 44px; height: 30px; display: block; overflow: hidden; }
+.frx-swatch i { position: absolute; left: 9px; right: 9px; bottom: 6px; height: 9px; display: block; }
+.frx-swatch--flat { background: #fff; border: 1px solid #d0d5dd; }
+.frx-swatch--flat i { background: #2563eb; }
+.frx-swatch--material { background: #fafafa; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,.35); }
+.frx-swatch--material i { background: #6200ee; border-radius: 3px; box-shadow: 0 2px 3px rgba(0,0,0,.3); }
+.frx-swatch--brutalist { background: #fff; border: 3px solid #000; }
+.frx-swatch--brutalist i { background: #ff0; border: 2px solid #000; box-shadow: 3px 3px 0 #000; left: 6px; right: 12px; bottom: 7px; }
+.frx-swatch--frutiger-aero { background: linear-gradient(180deg, #e8f6ff, #bfe3ff 55%, #e9f9e9); border-radius: 9px; border: 1px solid #8cc2ef; }
+.frx-swatch--frutiger-aero i { background: linear-gradient(180deg, #fff 0%, #d6ecff 48%, #9ccfff 52%, #c9e6ff); border: 1px solid #6aa9e0; border-radius: 6px; }
+.frx-swatch--claymation { background: #f4e6d4; border-radius: 12px; border: 2px solid #5b4636; }
+.frx-swatch--claymation i { background: #e98a6b; border: 2px solid #5b4636; border-radius: 7px; box-shadow: 0 2px 0 #5b4636; }

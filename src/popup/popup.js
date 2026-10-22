@@ -376,5 +376,38 @@
     paintImportToggle(); renderFonts();
   });
 
-  loadImportedFonts().then(function () { paintImportToggle(); load(); });
+  // ---- page styles (Flat / Material / Brutalist / Frutiger Aero / Claymation)
+  const styleBtns = Array.from(document.querySelectorAll(".frx-style"));
+  const styleNone = document.getElementById("frx-style-none");
+  function paintStyle(active) {
+    styleBtns.forEach(function (b) { b.classList.toggle("frx-style--on", b.dataset.style === active); });
+    styleNone.hidden = !active;
+  }
+  function selectStyle(style) {
+    if (typeof tabId !== "number") return;
+    styleBtns.forEach(function (b) { b.disabled = true; });
+    bgSend({ type: "FRX_SELECT_STYLE", tabId: tabId, style: style }).then(function (resp) {
+      styleBtns.forEach(function (b) { b.disabled = false; });
+      if (resp && resp.ok) {
+        paintStyle(resp.style);
+        const label = style ? (styleBtns.find(function (b) { return b.dataset.style === style; }) || {}).textContent : "";
+        // fonts in use change with the style, so rescan, then show the result
+        load().then(function () {
+          setStatus(style ? "Page remixed: " + label + " style." : "Page style removed.", style ? "ok" : "info");
+        });
+      } else {
+        setStatus((resp && resp.error) || "Could not apply the style.", "error");
+      }
+    });
+  }
+  styleBtns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      selectStyle(b.classList.contains("frx-style--on") ? "" : b.dataset.style);   // click again = off
+    });
+  });
+  styleNone.addEventListener("click", function () { selectStyle(""); });
+
+  loadImportedFonts().then(function () { paintImportToggle(); return load(); }).then(function () {
+    return toContent({ type: "FRX_GET_STYLE" });
+  }).then(function (r) { if (r && r.ok) paintStyle(r.style); });
 })();

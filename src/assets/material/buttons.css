@@ -1,0 +1,12 @@
+/* Material - buttons */
+html[data-frx-style="material"] button, html[data-frx-style="material"] input[type="button"], html[data-frx-style="material"] input[type="submit"], html[data-frx-style="material"] input[type="reset"], html[data-frx-style="material"] [role="button"], html[data-frx-style="material"] a.btn, html[data-frx-style="material"] a.button, html[data-frx-style="material"] .btn, html[data-frx-style="material"] .button {
+  background: #6200ee !important; color: #ffffff !important;
+  border: none !important; border-radius: 6px !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,.24), 0 1px 2px rgba(0,0,0,.12) !important; font-weight: 500 !important;
+  padding: var(--frx-unit) calc(var(--frx-unit) * 2) !important;
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif !important; cursor: pointer !important;
+  transition: background .15s, transform .1s, box-shadow .15s !important;
+  text-transform: uppercase !important; letter-spacing: .08em !important;
+}
+html[data-frx-style="material"] button:hover, html[data-frx-style="material"] input[type="button"]:hover, html[data-frx-style="material"] input[type="submit"]:hover, html[data-frx-style="material"] input[type="reset"]:hover, html[data-frx-style="material"] [role="button"]:hover, html[data-frx-style="material"] a.btn:hover, html[data-frx-style="material"] a.button:hover, html[data-frx-style="material"] .btn:hover, html[data-frx-style="material"] .button:hover { background: #3700b3 !important; }
+html[data-frx-style="material"] button:active, html[data-frx-style="material"] input[type="button"]:active, html[data-frx-style="material"] input[type="submit"]:active, html[data-frx-style="material"] input[type="reset"]:active, html[data-frx-style="material"] [role="button"]:active, html[data-frx-style="material"] a.btn:active, html[data-frx-style="material"] a.button:active, html[data-frx-style="material"] .btn:active, html[data-frx-style="material"] .button:active { transform: translateY(1px) !important; }
