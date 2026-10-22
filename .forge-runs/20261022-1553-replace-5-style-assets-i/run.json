@@ -383,6 +383,34 @@
       },
       "note": null,
       "telemetry": ".forge-runs/20261022-1553-replace-5-style-assets-i/10-build-r3/"
+    },
+    {
+      "seq": 11,
+      "phase": "eval-r3",
+      "round": 3,
+      "status": "timeout",
+      "wall_seconds": 1207.9,
+      "trace_id": "b495ca5d-1ed8-4952-a031-9e202023a0e5",
+      "verdict": "UNREADABLE",
+      "checks_passed": 5,
+      "checks_total": 5,
+      "checks_failed": [],
+      "files": {
+        "added": [],
+        "removed": [],
+        "modified": []
+      },
+      "file_count": 54,
+      "agent": {
+        "steps": 62,
+        "tool_calls_total": 55,
+        "plain_text_retries": 7,
+        "invalid_args": 4,
+        "ended": "cut_off_or_crashed",
+        "health": "degraded: 6 echoed replies, 1 stale replies, 4 malformed tool args, 6 append chunks"
+      },
+      "note": null,
+      "telemetry": ".forge-runs/20261022-1553-replace-5-style-assets-i/11-eval-r3/"
     }
   ],
   "outcome": null,
