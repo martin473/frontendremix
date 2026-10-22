@@ -49,3 +49,7 @@ body { display: flex; flex-direction: column; max-height: 560px; }
 .frx-clear:hover { color: var(--frx-bad); }
 .frx-footer { flex: 0 0 auto; padding: 10px 12px; border-top: 1px solid var(--frx-border); background: var(--frx-panel); }
 .frx-row-error { margin-top: 6px; font-size: 11px; color: var(--frx-bad); word-break: break-word; }
+.frx-picker { font-size: 13px; cursor: pointer; }
+.frx-item > .frx-input { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; }
+.frx-item > .frx-input[hidden] { display: none; }
+.frx-url-toggle { margin-top: 4px; padding-left: 0; }

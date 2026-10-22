@@ -14,6 +14,47 @@
   let tabId = null;
   let fonts = [];
 
+  // ---- system fonts: no download, so no site's security policy can block them.
+  // Firefox doesn't let extensions list installed fonts, so we test a broad list
+  // of common macOS / Windows / Linux fonts and keep the ones that are installed.
+  const CANDIDATE_FONTS = [
+    "American Typewriter", "Andale Mono", "Arial", "Arial Black", "Arial Narrow", "Arial Rounded MT Bold",
+    "Avenir", "Avenir Next", "Avenir Next Condensed", "Baskerville", "Big Caslon", "Bodoni 72",
+    "Bradley Hand", "Brush Script MT", "Calibri", "Cambria", "Candara", "Chalkboard", "Chalkboard SE",
+    "Chalkduster", "Charter", "Cochin", "Comic Sans MS", "Consolas", "Constantia", "Copperplate",
+    "Corbel", "Courier", "Courier New", "DejaVu Sans", "DejaVu Serif", "DejaVu Sans Mono", "Didot",
+    "Franklin Gothic Medium", "Futura", "Garamond", "Geneva", "Georgia", "Gill Sans", "Helvetica",
+    "Helvetica Neue", "Herculanum", "Hoefler Text", "Impact", "Iowan Old Style", "Lucida Console",
+    "Lucida Grande", "Lucida Sans Unicode", "Luminari", "Marker Felt", "Menlo", "Monaco",
+    "Noteworthy", "Optima", "Palatino", "Palatino Linotype", "Papyrus", "Phosphate", "Rockwell",
+    "Segoe Print", "Segoe Script", "Segoe UI", "SF Mono", "SF Pro Display", "SF Pro Text",
+    "Skia", "Snell Roundhand", "Tahoma", "Times", "Times New Roman", "Trattatello", "Trebuchet MS",
+    "Ubuntu", "Ubuntu Mono", "Verdana", "Zapfino",
+    "serif", "sans-serif", "monospace", "cursive", "fantasy", "system-ui"
+  ];
+  const GENERIC = new Set(["serif", "sans-serif", "monospace", "cursive", "fantasy", "system-ui"]);
+
+  function detectInstalledFonts() {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const sample = "mmmmmmmmmmlli1WQgy@#&";
+    const bases = ["monospace", "serif", "sans-serif"];
+    const baseWidths = bases.map(function (b) { ctx.font = "72px " + b; return ctx.measureText(sample).width; });
+    return CANDIDATE_FONTS.filter(function (name) {
+      if (GENERIC.has(name)) return true;
+      // installed if it renders differently from at least one fallback
+      return bases.some(function (b, i) {
+        ctx.font = '72px "' + name + '", ' + b;
+        return Math.abs(ctx.measureText(sample).width - baseWidths[i]) > 0.5;
+      });
+    });
+  }
+  let systemFonts = null;
+  function getSystemFonts() {
+    if (!systemFonts) systemFonts = detectInstalledFonts();
+    return systemFonts;
+  }
+
   function setStatus(message, kind) {
     if (!message) {
       els.status.hidden = true;
@@ -87,31 +128,56 @@
     const rowError = el("div", "frx-row-error");
     rowError.hidden = true;
     const form = el("form", "frx-form");
+    const picker = el("select", "frx-input frx-picker");
+    picker.setAttribute("aria-label", "System font for " + font.name);
+    const ph = el("option", null, "Pick a system font\u2026");
+    ph.value = "";
+    picker.appendChild(ph);
+    getSystemFonts().forEach(function (name) {
+      const opt = el("option", null, name);
+      opt.value = name;
+      opt.style.fontFamily = GENERIC.has(name) ? name : '"' + name + '"';
+      if (font.overrideSystem === name) opt.selected = true;
+      picker.appendChild(opt);
+    });
+    picker.addEventListener("change", function () {
+      picker.style.fontFamily = picker.value ? '"' + picker.value + '"' : "";
+    });
+    if (font.overrideSystem) picker.style.fontFamily = '"' + font.overrideSystem + '"';
+    const applyBtn = el("button", "frx-btn frx-btn--primary", "Apply");
+    applyBtn.type = "submit";
+    form.appendChild(picker);
+    form.appendChild(applyBtn);
+
+    const urlToggle = el("button", "frx-clear frx-url-toggle", "or use a font URL\u2026");
+    urlToggle.type = "button";
     const input = el("input", "frx-input");
     input.type = "url";
     input.placeholder = "https://fonts.googleapis.com/css2?family=...";
-    input.value = font.overrideTo || "";
-    input.setAttribute("aria-label", "New font URL for " + font.name);
-    const applyBtn = el("button", "frx-btn frx-btn--primary", "Apply");
-    applyBtn.type = "submit";
-    form.appendChild(input);
-    form.appendChild(applyBtn);
+    input.value = font.overrideSystem ? "" : (font.overrideTo || "");
+    input.hidden = !input.value;
+    input.setAttribute("aria-label", "Font URL for " + font.name);
+    urlToggle.addEventListener("click", function () { input.hidden = !input.hidden; if (!input.hidden) input.focus(); });
+
     form.addEventListener("submit", function (ev) {
       ev.preventDefault();
-      const url = input.value.trim();
+      const url = input.hidden ? "" : input.value.trim();
+      const sys = picker.value;
       rowError.hidden = true;
-      if (!url) {
+      if (!url && !sys) {
         rowError.hidden = false;
-        rowError.textContent = "Enter a font URL first.";
+        rowError.textContent = "Pick a font (or paste a font URL) first.";
         return;
       }
       applyBtn.disabled = true;
-      applyBtn.textContent = "Applying...";
-      toContent({ type: "FRX_APPLY_OVERRIDE", fontName: font.name, fontUrl: url }).then(function (resp) {
+      applyBtn.textContent = url ? "Downloading..." : "Applying...";
+      const msg = url ? { type: "FRX_APPLY_OVERRIDE", fontName: font.name, fontUrl: url }
+                      : { type: "FRX_APPLY_OVERRIDE", fontName: font.name, systemFont: sys };
+      toContent(msg).then(function (resp) {
         applyBtn.disabled = false;
         applyBtn.textContent = "Apply";
         if (resp && resp.ok) {
-          setStatus("Remixed " + font.name + ".", "ok");
+          setStatus("Remixed " + font.name + " \u2192 " + (sys && !url ? sys : (resp.family || "custom font")) + ".", "ok");
           load();
         } else {
           rowError.hidden = false;
@@ -120,10 +186,12 @@
       });
     });
     li.appendChild(form);
+    li.appendChild(input);
+    li.appendChild(urlToggle);
     const actions = el("div", "frx-item-actions");
     const current = el("span", "frx-current");
     if (font.overridden && font.overrideTo) {
-      current.textContent = "Now: " + String(font.overrideTo).replace(/^https?:\/\//, "");
+      current.textContent = "Now: " + String(font.overrideTo).replace(/^https?:\/\//, "").slice(0, 60);
       current.title = font.overrideTo;
     } else if (font.overridden) {
       current.textContent = "Override active";
