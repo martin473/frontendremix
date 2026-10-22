@@ -15,8 +15,8 @@
   let fonts = [];
 
   // ---- system fonts: no download, so no site's security policy can block them.
-  // Firefox doesn't let extensions list installed fonts, so we test a broad list
-  // of common macOS / Windows / Linux fonts and keep the ones that are installed.
+  // Firefox doesn't let extensions list installed fonts, so as a baseline we test a
+  // broad list of common fonts; the native helper (below) adds everything else.
   const CANDIDATE_FONTS = [
     "American Typewriter", "Andale Mono", "Arial", "Arial Black", "Arial Narrow", "Arial Rounded MT Bold",
     "Avenir", "Avenir Next", "Avenir Next Condensed", "Baskerville", "Big Caslon", "Bodoni 72",
@@ -49,8 +49,8 @@
       });
     });
   }
-  // Fonts the user imported from their Mac (every installed family) - see the
-  // "Import all my fonts" panel. Saved in extension storage, so it's a one-time step.
+  // Every installed font family on the Mac, from the native font helper (or pasted
+  // by hand as a fallback). Cached in extension storage; refreshed on each popup open.
   let importedFonts = [];
   async function loadImportedFonts() {
     try {
@@ -344,36 +344,91 @@
     });
   });
 
-  // ---- import every installed font family from the Mac (one-time)
-  const IMPORT_CMD = "system_profiler SPFontsDataType | sed -n 's/^ *Family: //p' | sort -u | pbcopy";
+  // ---- every installed font, read straight from the Mac by the native helper
+  // (native/frx_fonts_host.py). The last list is cached so the picker opens instantly,
+  // then refreshed in the background each time the popup opens, so newly installed
+  // fonts show up without any manual step.
+  const HOST = "frontend_remix_fonts";
+  const INSTALL_CMD = "bash ~/frontendremix/native/install.sh";
+  const PASTE_CMD = "system_profiler SPFontsDataType | sed -n 's/^ *Family: //p' | sort -u | pbcopy";
   const imp = {
     toggle: document.getElementById("frx-import-toggle"),
     panel: document.getElementById("frx-import"),
     cmd: document.getElementById("frx-import-cmd"),
     copy: document.getElementById("frx-import-copy"),
+    pasteCmd: document.getElementById("frx-paste-cmd"),
     text: document.getElementById("frx-import-text"),
     save: document.getElementById("frx-import-save"),
-    note: document.getElementById("frx-import-note")
+    pasteNote: document.getElementById("frx-paste-note"),
+    note: document.getElementById("frx-import-note"),
+    retry: document.getElementById("frx-import-retry")
   };
+  let helperOk = null;          // null = not asked yet, true/false after asking
+  let scanning = false;
+
   function paintImportToggle() {
-    imp.toggle.textContent = importedFonts.length
-      ? importedFonts.length + " fonts imported \u2014 update"
-      : "Import all my fonts";
+    if (scanning) { imp.toggle.textContent = "Scanning your fonts…"; return; }
+    if (helperOk) {
+      imp.toggle.textContent = importedFonts.length + " fonts on this Mac — rescan";
+      imp.toggle.title = "Do a deep rescan (also finds fonts activated by font managers)";
+    } else {
+      imp.toggle.textContent = importedFonts.length ? importedFonts.length + " fonts — show all" : "Show all my fonts";
+      imp.toggle.title = "";
+    }
   }
-  imp.cmd.textContent = IMPORT_CMD;
-  imp.toggle.addEventListener("click", function () { imp.panel.hidden = !imp.panel.hidden; });
+  async function saveFontList(names) {
+    importedFonts = names; systemFonts = null;   // picker re-reads the list next time it opens
+    try { await api.storage.local.set({ frxImportedFonts: names }); } catch (e) { /* ignore */ }
+  }
+  async function syncInstalledFonts(cmd) {
+    scanning = true; paintImportToggle();
+    try {
+      const res = await api.runtime.sendNativeMessage(HOST, { cmd: cmd || "list" });
+      if (!res || !res.ok || !Array.isArray(res.fonts)) throw new Error((res && res.error) || "No reply from the font helper.");
+      helperOk = true;
+      await saveFontList(res.fonts);
+      imp.panel.hidden = true;
+      return res.fonts.length;
+    } catch (e) {
+      helperOk = false;
+      imp.note.textContent = /No such native application|not found/i.test(String(e && e.message))
+        ? "The font helper isn't set up yet."
+        : "Font helper error: " + ((e && e.message) || e);
+      return -1;
+    } finally {
+      scanning = false; paintImportToggle();
+    }
+  }
+
+  imp.cmd.textContent = INSTALL_CMD;
+  imp.pasteCmd.textContent = PASTE_CMD;
+  imp.toggle.addEventListener("click", function () {
+    if (scanning) return;
+    if (helperOk) {
+      syncInstalledFonts("deep").then(function (n) {
+        if (n >= 0) setStatus("Found " + n + " fonts on this Mac.", "ok");
+      });
+    } else {
+      imp.panel.hidden = !imp.panel.hidden;
+    }
+  });
   imp.copy.addEventListener("click", function () {
-    navigator.clipboard.writeText(IMPORT_CMD).then(function () { imp.copy.textContent = "Copied!"; });
+    navigator.clipboard.writeText(INSTALL_CMD).then(function () { imp.copy.textContent = "Copied!"; });
+  });
+  imp.retry.addEventListener("click", function () {
+    imp.note.textContent = "Checking…";
+    syncInstalledFonts("list").then(function (n) {
+      if (n >= 0) setStatus("Found " + n + " fonts on this Mac.", "ok");
+    });
   });
   imp.save.addEventListener("click", async function () {
     const names = Array.from(new Set(imp.text.value.split(/\r?\n/).map(function (l) { return l.trim(); })
       .filter(function (l) { return l && l.length < 120 && !/^[.#]/.test(l); })));
-    if (!names.length) { imp.note.textContent = "Paste the list first (run the command, then Cmd+V here)."; return; }
-    await api.storage.local.set({ frxImportedFonts: names });
-    importedFonts = names; systemFonts = null;
-    imp.note.textContent = "Saved " + names.length + " fonts.";
+    if (!names.length) { imp.pasteNote.textContent = "Paste the list first (run the command, then Cmd+V here)."; return; }
+    await saveFontList(names);
+    imp.pasteNote.textContent = "Saved " + names.length + " fonts.";
     imp.text.value = ""; imp.panel.hidden = true;
-    paintImportToggle(); renderFonts();
+    paintImportToggle();
   });
 
   // ---- page styles (Flat / Material / Brutalist / Frutiger Aero / Claymation)
@@ -393,7 +448,9 @@
         const label = style ? (styleBtns.find(function (b) { return b.dataset.style === style; }) || {}).textContent : "";
         // fonts in use change with the style, so rescan, then show the result
         load().then(function () {
-          setStatus(style ? "Page remixed: " + label + " style." : "Page style removed.", style ? "ok" : "info");
+          const kept = resp.fixed ? " " + resp.fixed + " fixed-size area" + (resp.fixed === 1 ? "" : "s") +
+            " kept " + (resp.fixed === 1 ? "its" : "their") + " spacing so nothing overflows." : "";
+          setStatus(style ? "Page remixed: " + label + " style." + kept : "Page style removed.", style ? "ok" : "info");
         });
       } else {
         setStatus((resp && resp.error) || "Could not apply the style.", "error");
@@ -407,7 +464,11 @@
   });
   styleNone.addEventListener("click", function () { selectStyle(""); });
 
-  loadImportedFonts().then(function () { paintImportToggle(); return load(); }).then(function () {
+  loadImportedFonts().then(function () {
+    paintImportToggle();
+    syncInstalledFonts("list");   // refresh the installed-font list in the background
+    return load();
+  }).then(function () {
     return toContent({ type: "FRX_GET_STYLE" });
   }).then(function (r) { if (r && r.ok) paintStyle(r.style); });
 })();

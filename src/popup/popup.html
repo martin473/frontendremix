@@ -31,18 +31,25 @@
     <div id="frx-empty" class="frx-empty" hidden>No rendered fonts detected on this page.</div>
   </main>
   <section id="frx-import" class="frx-import" hidden>
-    <p><strong>See every font on your Mac.</strong> Firefox can't list installed fonts for extensions, so grab the list once:</p>
+    <p><strong>See every font on your Mac.</strong> Firefox can't list installed fonts for extensions on its own, so Frontend Remix uses a small helper. Set it up once:</p>
     <ol>
       <li>Open Terminal and run <button id="frx-import-copy" class="frx-clear" type="button">Copy command</button>
-        <code id="frx-import-cmd"></code></li>
-      <li>Paste the result here (Cmd+V) and Save.</li>
+        <code id="frx-import-cmd"></code>
+        <span class="frx-import-note">(Use the path to your Frontend Remix folder if it isn't in your home folder.)</span></li>
+      <li>Reopen this popup. New fonts are picked up automatically from then on.</li>
     </ol>
-    <textarea id="frx-import-text" class="frx-input" rows="4" placeholder="Paste your font list here"></textarea>
+    <details>
+      <summary>Or paste a font list by hand</summary>
+      <p>Run <code id="frx-paste-cmd"></code> then paste the result here.</p>
+      <textarea id="frx-import-text" class="frx-input" rows="4" placeholder="Paste your font list here"></textarea>
+      <div class="frx-import-row"><span id="frx-paste-note" class="frx-import-note"></span>
+        <button id="frx-import-save" class="frx-btn frx-btn--primary" type="button">Save</button></div>
+    </details>
     <div class="frx-import-row"><span id="frx-import-note" class="frx-import-note"></span>
-      <button id="frx-import-save" class="frx-btn frx-btn--primary" type="button">Save</button></div>
+      <button id="frx-import-retry" class="frx-btn frx-btn--primary" type="button">Check again</button></div>
   </section>
   <footer class="frx-footer">
-    <button id="frx-import-toggle" class="frx-clear" type="button">Import all my fonts</button>
+    <button id="frx-import-toggle" class="frx-clear" type="button">Show all my fonts</button>
     <button id="frx-reset" class="frx-btn frx-btn-ghost" disabled>Reset all overrides</button>
   </footer>
   <script src="popup.js"></script>

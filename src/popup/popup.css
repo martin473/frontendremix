@@ -104,3 +104,6 @@ body { display: flex; flex-direction: column; max-height: 560px; }
 .frx-swatch--frutiger-aero i { background: linear-gradient(180deg, #fff 0%, #d6ecff 48%, #9ccfff 52%, #c9e6ff); border: 1px solid #6aa9e0; border-radius: 6px; }
 .frx-swatch--claymation { background: #f4e6d4; border-radius: 12px; border: 2px solid #5b4636; }
 .frx-swatch--claymation i { background: #e98a6b; border: 2px solid #5b4636; border-radius: 7px; box-shadow: 0 2px 0 #5b4636; }
+.frx-import details { margin: 4px 0 8px; }
+.frx-import summary { cursor: pointer; color: var(--frx-muted); font-size: 11px; }
+.frx-import details p { margin: 6px 0; }

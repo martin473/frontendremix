@@ -1,10 +1,8 @@
-/* Brutalist - borders */
+/* Brutalist - borders (fixed-size boxes get an outline instead of a wider border) */
 html[data-frx-style="brutalist"] article, html[data-frx-style="brutalist"] [class*="card" i], html[data-frx-style="brutalist"] [class*="panel" i] { border-radius: 0 !important; }
 html[data-frx-style="brutalist"] img, html[data-frx-style="brutalist"] video, html[data-frx-style="brutalist"] iframe { border-radius: 0 !important; }
-html[data-frx-style="brutalist"] hr { border: 0 !important; border-top: 3px solid #000000 !important; }
+html[data-frx-style="brutalist"] hr:not([data-frx-fit="fixed"], [data-frx-fit="fixed"] *) { border: 0 !important; border-top: 3px solid #000000 !important; }
 html[data-frx-style="brutalist"] table, html[data-frx-style="brutalist"] th, html[data-frx-style="brutalist"] td { border-color: #000000 !important; }
-html[data-frx-style="brutalist"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]):not([type="file"]), html[data-frx-style="brutalist"] textarea, html[data-frx-style="brutalist"] select {
-  background: #ffffff !important; color: #000000 !important;
-  border: 3px solid #000000 !important; border-radius: 0 !important;
-  padding: calc(var(--frx-unit) * .75) var(--frx-unit) !important;
-}
+html[data-frx-style="brutalist"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]):not([type="file"]), html[data-frx-style="brutalist"] textarea, html[data-frx-style="brutalist"] select { background: #ffffff !important; color: #000000 !important; border-radius: 0 !important; }
+html[data-frx-style="brutalist"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]):not([type="file"]):not([data-frx-fit="fixed"], [data-frx-fit="fixed"] *), html[data-frx-style="brutalist"] textarea:not([data-frx-fit="fixed"], [data-frx-fit="fixed"] *), html[data-frx-style="brutalist"] select:not([data-frx-fit="fixed"], [data-frx-fit="fixed"] *) { border: 3px solid #000000 !important; padding: calc(var(--frx-unit) * .75) var(--frx-unit) !important; }
+html[data-frx-style="brutalist"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]):not([type="file"]):is([data-frx-fit="fixed"], [data-frx-fit="fixed"] *), html[data-frx-style="brutalist"] textarea:is([data-frx-fit="fixed"], [data-frx-fit="fixed"] *), html[data-frx-style="brutalist"] select:is([data-frx-fit="fixed"], [data-frx-fit="fixed"] *) { outline: 3px solid #000000 !important; outline-offset: 0 !important; }

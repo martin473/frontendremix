@@ -1,10 +1,7 @@
-/* Material - spacing scale (16px grid) */
-html[data-frx-style="material"] {
-  --frx-unit: 16px;
-  --frx-gap: 32px;
-  --frx-margin-base: 32px;
-  --frx-radius: 6px;
-}
-html[data-frx-style="material"] h1, html[data-frx-style="material"] h2, html[data-frx-style="material"] h3, html[data-frx-style="material"] h4, html[data-frx-style="material"] h5, html[data-frx-style="material"] h6 { margin-top: calc(var(--frx-unit) * 3) !important; margin-bottom: var(--frx-unit) !important; }
-html[data-frx-style="material"] p, html[data-frx-style="material"] ul, html[data-frx-style="material"] ol, html[data-frx-style="material"] blockquote { margin-bottom: var(--frx-margin-base) !important; }
-html[data-frx-style="material"] :is(article, html[data-frx-style="material"] [class*="card" i], html[data-frx-style="material"] [class*="panel" i]) > :is(h1, html[data-frx-style="material"] h2, html[data-frx-style="material"] h3, html[data-frx-style="material"] h4, html[data-frx-style="material"] h5, html[data-frx-style="material"] h6):first-child { margin-top: 0 !important; }
+/* Material - spacing scale (16px grid). Margins only apply in normal flow; */
+/* flex / grid items get spacing from the container gap, fixed boxes keep theirs. */
+html[data-frx-style="material"] { --frx-unit: 16px; --frx-gap: 32px; --frx-margin-base: 32px; --frx-radius: 6px; }
+html[data-frx-style="material"] h1:not([data-frx-fit], [data-frx-fit="fixed"] *), html[data-frx-style="material"] h2:not([data-frx-fit], [data-frx-fit="fixed"] *), html[data-frx-style="material"] h3:not([data-frx-fit], [data-frx-fit="fixed"] *), html[data-frx-style="material"] h4:not([data-frx-fit], [data-frx-fit="fixed"] *), html[data-frx-style="material"] h5:not([data-frx-fit], [data-frx-fit="fixed"] *), html[data-frx-style="material"] h6:not([data-frx-fit], [data-frx-fit="fixed"] *) { margin-top: calc(var(--frx-unit) * 3) !important; margin-bottom: var(--frx-unit) !important; }
+html[data-frx-style="material"] p:not([data-frx-fit], [data-frx-fit="fixed"] *), html[data-frx-style="material"] ul:not([data-frx-fit], [data-frx-fit="fixed"] *), html[data-frx-style="material"] ol:not([data-frx-fit], [data-frx-fit="fixed"] *), html[data-frx-style="material"] blockquote:not([data-frx-fit], [data-frx-fit="fixed"] *) { margin-bottom: var(--frx-margin-base) !important; }
+html[data-frx-style="material"] :is(article, [class*="card" i], [class*="panel" i]) > :is(h1, h2, h3, h4, h5, h6):first-child:not([data-frx-fit], [data-frx-fit="fixed"] *) { margin-top: 0 !important; }
+html[data-frx-style="material"] [data-frx-gap]:not([data-frx-fit="fixed"], [data-frx-fit="fixed"] *) { gap: var(--frx-unit) !important; }

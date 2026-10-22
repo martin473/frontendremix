@@ -1,10 +1,8 @@
-/* Frutiger Aero - borders */
+/* Frutiger Aero - borders (fixed-size boxes get an outline instead of a wider border) */
 html[data-frx-style="frutiger-aero"] article, html[data-frx-style="frutiger-aero"] [class*="card" i], html[data-frx-style="frutiger-aero"] [class*="panel" i] { border-radius: 12px !important; }
 html[data-frx-style="frutiger-aero"] img, html[data-frx-style="frutiger-aero"] video, html[data-frx-style="frutiger-aero"] iframe { border-radius: 12px !important; }
-html[data-frx-style="frutiger-aero"] hr { border: 0 !important; border-top: 1px solid rgba(120,170,220,.7) !important; }
+html[data-frx-style="frutiger-aero"] hr:not([data-frx-fit="fixed"], [data-frx-fit="fixed"] *) { border: 0 !important; border-top: 1px solid rgba(120,170,220,.7) !important; }
 html[data-frx-style="frutiger-aero"] table, html[data-frx-style="frutiger-aero"] th, html[data-frx-style="frutiger-aero"] td { border-color: rgba(120,170,220,.7) !important; }
-html[data-frx-style="frutiger-aero"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]):not([type="file"]), html[data-frx-style="frutiger-aero"] textarea, html[data-frx-style="frutiger-aero"] select {
-  background: rgba(255,255,255,.85) !important; color: #12324d !important;
-  border: 1px solid #8cc2ef !important; border-radius: 12px !important;
-  padding: calc(var(--frx-unit) * .75) var(--frx-unit) !important;
-}
+html[data-frx-style="frutiger-aero"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]):not([type="file"]), html[data-frx-style="frutiger-aero"] textarea, html[data-frx-style="frutiger-aero"] select { background: rgba(255,255,255,.85) !important; color: #12324d !important; border-radius: 12px !important; }
+html[data-frx-style="frutiger-aero"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]):not([type="file"]):not([data-frx-fit="fixed"], [data-frx-fit="fixed"] *), html[data-frx-style="frutiger-aero"] textarea:not([data-frx-fit="fixed"], [data-frx-fit="fixed"] *), html[data-frx-style="frutiger-aero"] select:not([data-frx-fit="fixed"], [data-frx-fit="fixed"] *) { border: 1px solid #8cc2ef !important; padding: calc(var(--frx-unit) * .75) var(--frx-unit) !important; }
+html[data-frx-style="frutiger-aero"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]):not([type="file"]):is([data-frx-fit="fixed"], [data-frx-fit="fixed"] *), html[data-frx-style="frutiger-aero"] textarea:is([data-frx-fit="fixed"], [data-frx-fit="fixed"] *), html[data-frx-style="frutiger-aero"] select:is([data-frx-fit="fixed"], [data-frx-fit="fixed"] *) { outline: 1px solid #8cc2ef !important; outline-offset: 0 !important; }

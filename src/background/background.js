@@ -76,7 +76,7 @@
     if (style) await api.scripting.insertCSS({ target: { tabId: tabId }, files: styleFiles(style) });
     // content script flips html[data-frx-style] (every rule is scoped to it) and swaps icons
     const r = await forward(tabId, { type: "FRX_APPLY_STYLE", style: style || "" });
-    return r && r.ok ? { ok: true, style: style || "" } : (r || { ok: false, error: "No response from page" });
+    return r && r.ok ? { ok: true, style: style || "", fixed: r.fixed || 0 } : (r || { ok: false, error: "No response from page" });
   }
   api.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     if (!msg || typeof msg.type !== "string") return false;

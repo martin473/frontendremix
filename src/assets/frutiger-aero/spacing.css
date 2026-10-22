@@ -1,10 +1,7 @@
-/* Frutiger Aero - spacing scale (12px grid) */
-html[data-frx-style="frutiger-aero"] {
-  --frx-unit: 12px;
-  --frx-gap: 24px;
-  --frx-margin-base: 24px;
-  --frx-radius: 12px;
-}
-html[data-frx-style="frutiger-aero"] h1, html[data-frx-style="frutiger-aero"] h2, html[data-frx-style="frutiger-aero"] h3, html[data-frx-style="frutiger-aero"] h4, html[data-frx-style="frutiger-aero"] h5, html[data-frx-style="frutiger-aero"] h6 { margin-top: calc(var(--frx-unit) * 3) !important; margin-bottom: var(--frx-unit) !important; }
-html[data-frx-style="frutiger-aero"] p, html[data-frx-style="frutiger-aero"] ul, html[data-frx-style="frutiger-aero"] ol, html[data-frx-style="frutiger-aero"] blockquote { margin-bottom: var(--frx-margin-base) !important; }
-html[data-frx-style="frutiger-aero"] :is(article, html[data-frx-style="frutiger-aero"] [class*="card" i], html[data-frx-style="frutiger-aero"] [class*="panel" i]) > :is(h1, html[data-frx-style="frutiger-aero"] h2, html[data-frx-style="frutiger-aero"] h3, html[data-frx-style="frutiger-aero"] h4, html[data-frx-style="frutiger-aero"] h5, html[data-frx-style="frutiger-aero"] h6):first-child { margin-top: 0 !important; }
+/* Frutiger Aero - spacing scale (12px grid). Margins only apply in normal flow; */
+/* flex / grid items get spacing from the container gap, fixed boxes keep theirs. */
+html[data-frx-style="frutiger-aero"] { --frx-unit: 12px; --frx-gap: 24px; --frx-margin-base: 24px; --frx-radius: 12px; }
+html[data-frx-style="frutiger-aero"] h1:not([data-frx-fit], [data-frx-fit="fixed"] *), html[data-frx-style="frutiger-aero"] h2:not([data-frx-fit], [data-frx-fit="fixed"] *), html[data-frx-style="frutiger-aero"] h3:not([data-frx-fit], [data-frx-fit="fixed"] *), html[data-frx-style="frutiger-aero"] h4:not([data-frx-fit], [data-frx-fit="fixed"] *), html[data-frx-style="frutiger-aero"] h5:not([data-frx-fit], [data-frx-fit="fixed"] *), html[data-frx-style="frutiger-aero"] h6:not([data-frx-fit], [data-frx-fit="fixed"] *) { margin-top: calc(var(--frx-unit) * 3) !important; margin-bottom: var(--frx-unit) !important; }
+html[data-frx-style="frutiger-aero"] p:not([data-frx-fit], [data-frx-fit="fixed"] *), html[data-frx-style="frutiger-aero"] ul:not([data-frx-fit], [data-frx-fit="fixed"] *), html[data-frx-style="frutiger-aero"] ol:not([data-frx-fit], [data-frx-fit="fixed"] *), html[data-frx-style="frutiger-aero"] blockquote:not([data-frx-fit], [data-frx-fit="fixed"] *) { margin-bottom: var(--frx-margin-base) !important; }
+html[data-frx-style="frutiger-aero"] :is(article, [class*="card" i], [class*="panel" i]) > :is(h1, h2, h3, h4, h5, h6):first-child:not([data-frx-fit], [data-frx-fit="fixed"] *) { margin-top: 0 !important; }
+html[data-frx-style="frutiger-aero"] [data-frx-gap]:not([data-frx-fit="fixed"], [data-frx-fit="fixed"] *) { gap: var(--frx-unit) !important; }

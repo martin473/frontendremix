@@ -1,10 +1,8 @@
-/* Flat - borders */
+/* Flat - borders (fixed-size boxes get an outline instead of a wider border) */
 html[data-frx-style="flat"] article, html[data-frx-style="flat"] [class*="card" i], html[data-frx-style="flat"] [class*="panel" i] { border-radius: 0 !important; }
 html[data-frx-style="flat"] img, html[data-frx-style="flat"] video, html[data-frx-style="flat"] iframe { border-radius: 0 !important; }
-html[data-frx-style="flat"] hr { border: 0 !important; border-top: 1px solid #d0d5dd !important; }
+html[data-frx-style="flat"] hr:not([data-frx-fit="fixed"], [data-frx-fit="fixed"] *) { border: 0 !important; border-top: 1px solid #d0d5dd !important; }
 html[data-frx-style="flat"] table, html[data-frx-style="flat"] th, html[data-frx-style="flat"] td { border-color: #d0d5dd !important; }
-html[data-frx-style="flat"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]):not([type="file"]), html[data-frx-style="flat"] textarea, html[data-frx-style="flat"] select {
-  background: #ffffff !important; color: #1d2939 !important;
-  border: 1px solid #d0d5dd !important; border-radius: 0 !important;
-  padding: calc(var(--frx-unit) * .75) var(--frx-unit) !important;
-}
+html[data-frx-style="flat"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]):not([type="file"]), html[data-frx-style="flat"] textarea, html[data-frx-style="flat"] select { background: #ffffff !important; color: #1d2939 !important; border-radius: 0 !important; }
+html[data-frx-style="flat"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]):not([type="file"]):not([data-frx-fit="fixed"], [data-frx-fit="fixed"] *), html[data-frx-style="flat"] textarea:not([data-frx-fit="fixed"], [data-frx-fit="fixed"] *), html[data-frx-style="flat"] select:not([data-frx-fit="fixed"], [data-frx-fit="fixed"] *) { border: 1px solid #d0d5dd !important; padding: calc(var(--frx-unit) * .75) var(--frx-unit) !important; }
+html[data-frx-style="flat"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]):not([type="file"]):is([data-frx-fit="fixed"], [data-frx-fit="fixed"] *), html[data-frx-style="flat"] textarea:is([data-frx-fit="fixed"], [data-frx-fit="fixed"] *), html[data-frx-style="flat"] select:is([data-frx-fit="fixed"], [data-frx-fit="fixed"] *) { outline: 1px solid #d0d5dd !important; outline-offset: 0 !important; }

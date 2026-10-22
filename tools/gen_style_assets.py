@@ -76,8 +76,85 @@ STYLES = {
   ),
 }
 
-def scope(sid, sel):
-    return ", ".join('html[data-frx-style="%s"] %s' % (sid, s.strip()) for s in sel.split(", "))
+# ---- layout-context aware rules -------------------------------------------------
+# The content script tags elements with data-frx-fit before the style turns on:
+#   (no attribute)  normal flow: block content that grows with what's inside it
+#   "item"          child of a flex / grid container: spacing comes from the container's
+#                   gap, so the style leaves the item's own margins alone
+#   "fixed"         static / fixed-size box (or anything that overflowed when styled):
+#                   only visual changes, nothing that moves or resizes. Applies to the
+#                   whole subtree, so content added later inside it is covered too.
+FIXED = '[data-frx-fit="fixed"], [data-frx-fit="fixed"] *'
+NOT_FIXED = ':not(%s)' % FIXED                         # padding / border width / gap
+FLOW_ONLY = ':not([data-frx-fit], [data-frx-fit="fixed"] *)'   # margins
+IN_FIXED = ':is(%s)' % FIXED
+OUTER = ("margin",)
+INNER = ("padding", "border", "gap", "row-gap", "column-gap", "letter-spacing",
+         "text-transform", "font-size", "line-height", "width", "height")
+VISUAL_BORDER = ("border-radius", "border-color", "border-top-color", "border-right-color",
+                 "border-bottom-color", "border-left-color")
+
+def split_top(text, sep):
+    """Split on `sep` only outside (), [] and quotes."""
+    out, depth, quote, cur = [], 0, None, ""
+    for ch in text:
+        if quote:
+            quote = None if ch == quote else quote
+        elif ch in "\"'":
+            quote = ch
+        elif ch in "([":
+            depth += 1
+        elif ch in ")]":
+            depth -= 1
+        elif ch == sep and depth == 0:
+            out.append(cur); cur = ""; continue
+        cur += ch
+    out.append(cur)
+    return [x.strip() for x in out if x.strip()]
+
+def scope(sid, sel, ctx=""):
+    return ", ".join('html[data-frx-style="%s"] %s%s' % (sid, part, ctx) for part in split_top(sel, ","))
+
+def kind(prop):
+    if prop in VISUAL_BORDER:
+        return "visual"
+    if prop.startswith(OUTER):
+        return "outer"
+    if prop.startswith(INNER):
+        return "inner"
+    return "visual"
+
+def border_as_outline(value):
+    """`3px solid #000` -> outline hugging the box: drawn, but takes no space."""
+    parts = value.split()
+    if not parts or parts[0] in ("none", "0", "0px") or not parts[0][0].isdigit():
+        return None
+    return "outline: %s !important; outline-offset: 0 !important;" % value
+
+def rule(sid, sel, decls):
+    """Emit one rule per layout context: visual everywhere, sizing only where it fits."""
+    groups = {"visual": [], "inner": [], "outer": []}
+    fixed_extra = []
+    for d in split_top(decls, ";"):
+        if ":" not in d:
+            continue
+        prop, val = [x.strip() for x in d.split(":", 1)]
+        val = val.replace("!important", "").strip()
+        groups[kind(prop)].append("%s: %s !important;" % (prop, val))
+        if prop == "border":
+            o = border_as_outline(val)
+            if o:
+                fixed_extra.append(o)
+    out = []
+    if groups["visual"]:
+        out.append("%s { %s }" % (scope(sid, sel), " ".join(groups["visual"])))
+    if groups["inner"]:
+        out.append("%s { %s }" % (scope(sid, sel, NOT_FIXED), " ".join(groups["inner"])))
+    if groups["outer"]:
+        out.append("%s { %s }" % (scope(sid, sel, FLOW_ONLY), " ".join(groups["outer"])))
+    if fixed_extra:
+        out.append("%s { %s }" % (scope(sid, sel, IN_FIXED), " ".join(fixed_extra)))
+    return "\n".join(out)
 
 def write(path, text):
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -95,61 +172,52 @@ for sid, s in STYLES.items():
     d = os.path.join(OUT, sid)
     u = s["unit"]
     head_font = s["head_font"] or s["font"]
-    write(os.path.join(d, "spacing.css"), f"""
-/* {s['label']} - spacing scale ({u}px grid) */
-html[data-frx-style="{sid}"] {{
-  --frx-unit: {u}px;
-  --frx-gap: {u * 2}px;
-  --frx-margin-base: {u * 2}px;
-  --frx-radius: {s['radius']};
-}}
-{scope(sid, HEAD)} {{ margin-top: calc(var(--frx-unit) * 3) !important; margin-bottom: var(--frx-unit) !important; }}
-{scope(sid, 'p, ul, ol, blockquote')} {{ margin-bottom: var(--frx-margin-base) !important; }}
-{scope(sid, ':is(article, [class*="card" i], [class*="panel" i]) > :is(h1, h2, h3, h4, h5, h6):first-child')} {{ margin-top: 0 !important; }}
-""")
-    write(os.path.join(d, "fonts.css"), f"""
-/* {s['label']} - typography (local/system font stacks: nothing is downloaded) */
-{scope(sid, TEXT)} {{ font-family: {s['font']} !important; }}
-{scope(sid, HEAD)} {{ font-family: {head_font} !important; font-weight: {s['head_weight']} !important; color: {s['fg']} !important; }}
-{scope(sid, 'a')} {{ color: {s['link']} !important; }}
-{scope(sid, 'code, pre, kbd, samp')} {{ font-family: Menlo, Consolas, "Courier New", monospace !important; }}
-""")
-    write(os.path.join(d, "borders.css"), f"""
-/* {s['label']} - borders */
-{scope(sid, CARD)} {{ border-radius: {s['radius']} !important; }}
-{scope(sid, 'img, video, iframe')} {{ border-radius: {s['radius']} !important; }}
-{scope(sid, 'hr')} {{ border: 0 !important; border-top: {s['bw'] if s['bw'] != '0' else '1px'} {s['bstyle']} {s['bcolor'] if s['bw'] != '0' else 'rgba(0,0,0,.12)'} !important; }}
-{scope(sid, 'table, th, td')} {{ border-color: {s['bcolor'] if s['bw'] != '0' else 'rgba(0,0,0,.12)'} !important; }}
-{scope(sid, FIELD)} {{
-  background: {s['field_bg']} !important; color: {s['fg']} !important;
-  border: {s['field_border']} !important; border-radius: {s['radius']} !important;
-  padding: calc(var(--frx-unit) * .75) var(--frx-unit) !important;
-}}
-""")
-    write(os.path.join(d, "buttons.css"), f"""
-/* {s['label']} - buttons */
-{scope(sid, BTN)} {{
-  background: {s['btn_bg']} !important; color: {s['btn_fg']} !important;
-  border: {s['btn_border']} !important; border-radius: {s['radius']} !important;
-  box-shadow: {s['btn_shadow']} !important; font-weight: {s['btn_weight']} !important;
-  padding: var(--frx-unit) calc(var(--frx-unit) * 2) !important;
-  font-family: {s['font']} !important; cursor: pointer !important;
-  transition: background .15s, transform .1s, box-shadow .15s !important;
-  {s['btn_extra']}
-}}
-{scope(sid, BTN.replace(', ', ':hover, ') + ':hover')} {{ background: {s['btn_hover']} !important; }}
-{scope(sid, BTN.replace(', ', ':active, ') + ':active')} {{ transform: translateY({'2px' if sid in ('claymation','brutalist') else '1px'}) !important; }}
-""")
-    write(os.path.join(d, "layout.css"), f"""
-/* {s['label']} - layout: page surface + card / section treatment */
-html[data-frx-style="{sid}"] body {{ background: {s['bg']} !important; color: {s['fg']} !important; }}
-{scope(sid, CARD)} {{
-  background: {s['card_bg']} !important; box-shadow: {s['card_shadow']} !important;
-  border: {s['card_border']} !important;
-}}
-{scope(sid, 'article, [class*="card" i]')} {{ padding: calc(var(--frx-unit) * 1.5) !important; }}
-{scope(sid, 'ul[class], ol[class]')} {{ gap: var(--frx-unit); }}
-""")
+    write(os.path.join(d, "spacing.css"), "\n".join([
+        f"/* {s['label']} - spacing scale ({u}px grid). Margins only apply in normal flow; */",
+        "/* flex / grid items get spacing from the container gap, fixed boxes keep theirs. */",
+        f'html[data-frx-style="{sid}"] {{ --frx-unit: {u}px; --frx-gap: {u * 2}px; '
+        f'--frx-margin-base: {u * 2}px; --frx-radius: {s["radius"]}; }}',
+        rule(sid, HEAD, "margin-top: calc(var(--frx-unit) * 3); margin-bottom: var(--frx-unit)"),
+        rule(sid, "p, ul, ol, blockquote", "margin-bottom: var(--frx-margin-base)"),
+        rule(sid, ':is(article, [class*="card" i], [class*="panel" i]) > :is(h1, h2, h3, h4, h5, h6):first-child',
+             "margin-top: 0"),
+        # flex / grid containers: space their items with gap instead of margins
+        rule(sid, '[data-frx-gap]', "gap: var(--frx-unit)"),
+    ]))
+    write(os.path.join(d, "fonts.css"), "\n".join([
+        f"/* {s['label']} - typography (local/system font stacks: nothing is downloaded) */",
+        rule(sid, TEXT, f"font-family: {s['font']}"),
+        rule(sid, HEAD, f"font-family: {head_font}; font-weight: {s['head_weight']}; color: {s['fg']}"),
+        rule(sid, "a", f"color: {s['link']}"),
+        rule(sid, "code, pre, kbd, samp", 'font-family: Menlo, Consolas, "Courier New", monospace'),
+    ]))
+    line = s['bw'] if s['bw'] != '0' else '1px'
+    lcol = s['bcolor'] if s['bw'] != '0' else 'rgba(0,0,0,.12)'
+    write(os.path.join(d, "borders.css"), "\n".join([
+        f"/* {s['label']} - borders (fixed-size boxes get an outline instead of a wider border) */",
+        rule(sid, CARD, f"border-radius: {s['radius']}"),
+        rule(sid, "img, video, iframe", f"border-radius: {s['radius']}"),
+        rule(sid, "hr", f"border: 0; border-top: {line} {s['bstyle']} {lcol}"),
+        rule(sid, "table, th, td", f"border-color: {lcol}"),
+        rule(sid, FIELD, f"background: {s['field_bg']}; color: {s['fg']}; border: {s['field_border']}; "
+                         f"border-radius: {s['radius']}; padding: calc(var(--frx-unit) * .75) var(--frx-unit)"),
+    ]))
+    write(os.path.join(d, "buttons.css"), "\n".join([
+        f"/* {s['label']} - buttons */",
+        rule(sid, BTN, f"background: {s['btn_bg']}; color: {s['btn_fg']}; border: {s['btn_border']}; "
+                       f"border-radius: {s['radius']}; box-shadow: {s['btn_shadow']}; font-weight: {s['btn_weight']}; "
+                       f"padding: var(--frx-unit) calc(var(--frx-unit) * 2); font-family: {s['font']}; cursor: pointer; "
+                       f"transition: background .15s, transform .1s, box-shadow .15s; {s['btn_extra']}"),
+        rule(sid, BTN.replace(', ', ':hover, ') + ':hover', f"background: {s['btn_hover']}"),
+        rule(sid, BTN.replace(', ', ':active, ') + ':active',
+             f"transform: translateY({'2px' if sid in ('claymation', 'brutalist') else '1px'})"),
+    ]))
+    write(os.path.join(d, "layout.css"), "\n".join([
+        f"/* {s['label']} - layout: page surface + card / section treatment */",
+        rule(sid, "body", f"background: {s['bg']}; color: {s['fg']}"),
+        rule(sid, CARD, f"background: {s['card_bg']}; box-shadow: {s['card_shadow']}; border: {s['card_border']}"),
+        rule(sid, 'article, [class*="card" i]', "padding: calc(var(--frx-unit) * 1.5)"),
+    ]))
     for name, body in ICONS.items():
         write(os.path.join(d, "icons", name + ".svg"),
               f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="{s["icon_color"]}" '

@@ -319,18 +319,215 @@
     }
     return n;
   }
+  // ---- layout context: decide, per element, which style rules are safe to apply.
+  // The bundle CSS reads data-frx-fit:
+  //   (none)  normal flow      -> full style: margins, padding, borders
+  //   "item"  flex/grid child  -> padding/borders yes, own margins no (container gap spaces it)
+  //   "fixed" static-size box  -> visual only (colours, radius, shadows, inset outline), for
+  //                               it and everything inside it, so nothing grows and overflows
+  // data-frx-gap marks flex/grid containers whose items touch, so the style can space them.
+  const FIT = "data-frx-fit", GAP = "data-frx-gap";
+  const MAX_ELS = 8000;
+  const NO_BOX = new Set(["SCRIPT", "STYLE", "LINK", "META", "TEMPLATE", "NOSCRIPT", "BR", "WBR", "svg"]);
+  let fitObserver = null, fitTimer = 0, resizeTimer = 0;
+  let stats = { fixed: 0, items: 0 };
+
+  function pageElements(root) {
+    const all = (root || document.body || document.documentElement).getElementsByTagName("*");
+    const out = [];
+    for (let i = 0; i < all.length && out.length < MAX_ELS; i++) {
+      const el = all[i];
+      if (!NO_BOX.has(el.tagName) && !(el instanceof SVGElement)) out.push(el);
+    }
+    return out;
+  }
+  function clearFit() {
+    document.querySelectorAll("[" + FIT + "],[" + GAP + "]").forEach(function (el) {
+      el.removeAttribute(FIT); el.removeAttribute(GAP);
+    });
+    stats = { fixed: 0, items: 0 };
+  }
+  function inFixed(el) { return !!(el.closest && el.closest("[" + FIT + '="fixed"]')); }
+  function markFixed(el) {
+    if (el === document.documentElement || el === document.body || inFixed(el)) return false;
+    el.setAttribute(FIT, "fixed");
+    stats.fixed++;
+    return true;
+  }
+  function isFlexOrGrid(display) { return /flex|grid/.test(display); }
+  const zero = function (v) { return !v || v === "normal" || parseFloat(v) === 0; };
+
+  // structure: positioned boxes are fixed, flex/grid children are items
+  function tagStructure(els) {
+    els.forEach(function (el) {
+      if (inFixed(el)) return;
+      const cs = getComputedStyle(el);
+      if (cs.display === "none" || cs.display === "contents") return;
+      if (cs.position === "absolute" || cs.position === "fixed") { markFixed(el); return; }
+      const parent = el.parentElement;
+      if (parent && parent !== document.documentElement && isFlexOrGrid(getComputedStyle(parent).display)) {
+        el.setAttribute(FIT, "item"); stats.items++;
+      }
+      // a flex/grid container whose items touch and can reflow (wrapping flex or grid):
+      // let the style space them with gap rather than margins
+      if (isFlexOrGrid(cs.display) && zero(cs.rowGap) && zero(cs.columnGap) && el.children.length > 1 &&
+          (cs.display.indexOf("grid") !== -1 || cs.flexWrap !== "nowrap" || /^(UL|OL)$/.test(el.tagName))) {
+        const kids = Array.from(el.children).slice(0, 12);
+        if (kids.every(function (k) { const kc = getComputedStyle(k); return zero(kc.marginLeft) && zero(kc.marginRight) && zero(kc.marginTop) && zero(kc.marginBottom); })) {
+          el.setAttribute(GAP, "");
+        }
+      }
+    });
+  }
+
+  // how far each box's content spills past it (0 when it fits)
+  function measure(els) {
+    const m = new Map();
+    els.forEach(function (el) {
+      const cw = el.clientWidth, ch = el.clientHeight;
+      if (!cw && !ch) return;                                   // inline / hidden
+      const cs = getComputedStyle(el);
+      const padY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+      m.set(el, {
+        x: Math.max(0, el.scrollWidth - cw), y: Math.max(0, el.scrollHeight - ch),
+        frame: padY + parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth),
+        inner: ch - padY                                      // room left for the content
+      });
+    });
+    return m;
+  }
+  function pageOverflowers(vw) {
+    const set = new Set();
+    pageElements().forEach(function (el) {
+      if (getComputedStyle(el).position === "fixed") return;
+      const r = el.getBoundingClientRect();
+      if (r.width && r.right + window.scrollX > vw + 1) set.add(el);
+    });
+    return set;
+  }
+
+  // the children of an overflowing box that poke out of it; if none do, the box's own
+  // padding/border is the problem, so the box itself is the one to freeze
+  function stickingOut(box) {
+    const r = box.getBoundingClientRect();
+    const right = r.left + box.clientLeft + box.clientWidth + 1;
+    const bottom = r.top + box.clientTop + box.clientHeight + 1;
+    const kids = Array.from(box.children).filter(function (k) {
+      if (NO_BOX.has(k.tagName) || inFixed(k)) return false;
+      const kr = k.getBoundingClientRect();
+      return kr.width && (kr.right > right || kr.bottom > bottom);
+    });
+    return kids.length ? kids : box;
+  }
+
+  // style is on: anything that overflows now but didn't before is a static-size box.
+  // Mark the deepest offenders first, re-measure, repeat.
+  function fixOverflow(els, before, beforeWide, vw) {
+    const root = document.documentElement, body = document.body;
+    for (let pass = 0; pass < 6; pass++) {
+      const now = measure(els);
+      let bad = [];
+      now.forEach(function (v, el) {
+        if (el === root || el === body || inFixed(el)) return;
+        const b = before.get(el) || { x: 0, y: 0 };
+        const cs = getComputedStyle(el);
+        const scrollsY = /auto|scroll/.test(cs.overflowY);   // a scroller can just scroll further
+        const scrollsX = /auto|scroll/.test(cs.overflowX) && b.x > 1;
+        if ((v.x > b.x + 1 && !scrollsX) || (v.y > b.y + 1 && !scrollsY)) bad.push(stickingOut(el));
+        // fixed height: added padding/border didn't make the box taller, it squeezed the content
+        else if (b.frame !== undefined && v.frame > b.frame + 1 && v.inner < b.inner - 1) bad.push(el);
+      });
+      // page got wider than the window: find the outermost boxes sticking out
+      if (root.scrollWidth > vw + 1 && root.scrollWidth > (before.pageWidth || 0) + 1) {
+        const wide = pageOverflowers(vw);
+        wide.forEach(function (el) {
+          if (!beforeWide.has(el) && !wide.has(el.parentElement)) bad.push(el);
+        });
+      }
+      if (!bad.length) return;
+      bad = [].concat.apply([], bad);
+      // deepest first: an offender that contains another offender waits for the next pass
+      const deepest = bad.filter(function (el) {
+        return !bad.some(function (o) { return o !== el && el.contains(o); });
+      });
+      let changed = false;
+      (pass < 5 ? deepest : bad).forEach(function (el) { changed = markFixed(el) || changed; });
+      if (!changed) return;
+    }
+  }
+
+  function classify(style) {
+    const root = document.documentElement;
+    root.removeAttribute("data-frx-style");                    // measure the page as the site made it
+    clearFit();
+    const els = pageElements();
+    const vw = root.clientWidth;
+    const before = measure(els);
+    before.pageWidth = root.scrollWidth;
+    const beforeWide = root.scrollWidth > vw + 1 ? pageOverflowers(vw) : new Set();
+    tagStructure(els);
+    root.setAttribute("data-frx-style", style);                // all in one task: no flash
+    fixOverflow(els, before, beforeWide, vw);
+  }
+
+  // content added later (infinite scroll, SPA navigation): tag it, and if it overflows
+  // its container once styled, treat it as a static-size box
+  function watchLayout() {
+    if (fitObserver) return;
+    const pending = new Set();
+    fitObserver = new MutationObserver(function (records) {
+      records.forEach(function (r) {
+        r.addedNodes.forEach(function (n) { if (n.nodeType === 1) pending.add(n); });
+      });
+      if (!pending.size) return;
+      clearTimeout(fitTimer);
+      fitTimer = setTimeout(function () {
+        if (!currentStyle) { pending.clear(); return; }
+        const roots = Array.from(pending).filter(function (n) { return n.isConnected && !inFixed(n); });
+        pending.clear();
+        roots.forEach(function (n) {
+          tagStructure([n].concat(pageElements(n)));
+          const host = n.parentElement;
+          [n, host].forEach(function (box) {
+            if (box && box !== document.body && box !== document.documentElement && !inFixed(box) &&
+                (box.scrollWidth > box.clientWidth + 1 || box.scrollHeight > box.clientHeight + 1) &&
+                (box.clientWidth || box.clientHeight)) markFixed(n);
+          });
+        });
+      }, 250);
+    });
+    fitObserver.observe(document.body || document.documentElement, { childList: true, subtree: true });
+    window.addEventListener("resize", onResize);
+  }
+  function onResize() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () { if (currentStyle) classify(currentStyle); }, 400);
+  }
+  function unwatchLayout() {
+    if (fitObserver) { fitObserver.disconnect(); fitObserver = null; }
+    clearTimeout(fitTimer); clearTimeout(resizeTimer);
+    window.removeEventListener("resize", onResize);
+  }
+
   function applyStyle(style) {
     restoreIcons();
     if (!style) {
+      unwatchLayout();
       document.documentElement.removeAttribute("data-frx-style");
+      clearFit();
       currentStyle = "";
       return { ok: true, style: "", icons: 0 };
     }
-    document.documentElement.setAttribute("data-frx-style", style);
     currentStyle = style;
     let icons = 0;
     try { icons = swapIcons(style); } catch (e) { /* icons are best-effort */ }
-    return { ok: true, style: style, icons: icons };
+    try {
+      classify(style);
+    } catch (e) {
+      document.documentElement.setAttribute("data-frx-style", style);
+    }
+    watchLayout();
+    return { ok: true, style: style, icons: icons, fixed: stats.fixed, items: stats.items };
   }
 
   function handleMessage(msg) {
