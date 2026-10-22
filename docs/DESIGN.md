@@ -58,3 +58,11 @@ The style-swap feature is ADDED alongside it in the same popup.
 5. popup/popup.html + popup/popup.css + popup/popup.js (style dropdown + font list)
 6. assets/flat/*, assets/material/*, assets/brutalist/*, assets/frutiger-aero/*, assets/claymation/*
    each containing: fonts.css, borders.css, buttons.css, spacing.css, layout.css, icons/*.svg
+
+## Critical — Extend Claude's System-Font Version (1ffb51a)
+The working build /opt/forge-working/build/ is restored from commit 1ffb51a (system-font picker, font-family detection via computedStyle / document.fonts / @font-face). The agent must EDIT existing manifest, background, content, and popup — do NOT delete or replace them. Keep the font-detection + override feature intact.
+
+## Existing Message Types (must remain working)
+- FRX_PING, FRX_BG_FORWARD, FRX_BG_FETCH_FONT, FRX_BG_GET_TAB
+- New: FRX_SELECT_STYLE (popup -> bg -> content) with payload {style: "flat"|...}
+
