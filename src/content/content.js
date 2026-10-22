@@ -295,6 +295,14 @@
         case "FRX_RESET_ALL":
           resetAll();
           return { ok: true };
+        case "FRX_APPLY_STYLE":
+          if (!window.__frxStyleEngine) return { ok: false, error: "Style engine unavailable" };
+          return window.__frxStyleEngine.applyStyle(msg.style);
+        case "FRX_CLEAR_STYLE":
+          if (!window.__frxStyleEngine) return { ok: false, error: "Style engine unavailable" };
+          return window.__frxStyleEngine.clearStyle();
+        case "FRX_GET_STYLE":
+          return { ok: true, style: window.__frxStyleEngine ? window.__frxStyleEngine.getCurrentStyle() : "" };
         case "FRX_PING":
           return { ok: true };
         default:

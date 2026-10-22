@@ -9,10 +9,24 @@
     list: document.getElementById("frx-list"),
     empty: document.getElementById("frx-empty"),
     reset: document.getElementById("frx-reset"),
-    refresh: document.getElementById("frx-refresh")
+    refresh: document.getElementById("frx-refresh"),
+    stylePicker: document.getElementById("frx-style-picker"),
+    styleClear: document.getElementById("frx-style-clear"),
+    styleStatus: document.getElementById("frx-style-status")
   };
   let tabId = null;
   let fonts = [];
+
+  // ---- style catalog (mirrors content/style-engine.js CATALOG)
+  const STYLES = {
+    "brutalism": "Brutalism",
+    "swiss": "Swiss",
+    "bento": "Bento Grid",
+    "editorial": "Editorial",
+    "retro-y2k": "Retro / Y2K"
+  };
+  let currentStyle = "";
+
 
   // ---- system fonts: no download, so no site's security policy can block them.
   // Firefox doesn't let extensions list installed fonts, so we test a broad list
