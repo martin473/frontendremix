@@ -1,1 +1,7 @@
-body{max-width:1200px!important;margin
+body{max-width:1200px!important;margin:0 auto!important;padding:0 var(--frx-space-1)!important;}
+main,section,.container,.wrapper{display:block!important;width:100%!important;}
+[class*=grid]{display:grid!important;grid-template-columns:repeat(12,1fr)!important;gap:24px!important;}
+[class*=grid]>*{grid-column:4/10!important;}
+p{max-width:64ch!important;}
+img{max-width:100%!important;height:auto!important;display:block!important;}
+@media (max-width:768px){[class*=grid]{grid-template-columns:1fr!important;gap:16px!important;}[class*=grid]>*{grid-column:1/-1!important;}body{padding:0 var(--frx-space-1)!important;}}

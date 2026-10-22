@@ -1,0 +1,6 @@
+:root{--base:#0B0B1A;--text:#FFFFFF;--neon-pink:#FF3DCB;--neon-cyan:#2DF5FF;--lime:#C6FF3D;--frx-font-display:'Syne','Monument Extended',Impact,sans-serif;--frx-font-body:'Nunito','Manrope',system-ui,sans-serif;}
+body{font-family:var(--frx-font-body)!important;background:var(--base)!important;color:var(--text)!important;line-height:1.55!important;}
+h1,h2,h3,h4,h5,h6{font-family:var(--frx-font-display)!important;font-weight:800!important;letter-spacing:-0.01em!important;line-height:1.05!important;color:var(--text)!important;text-shadow:0 0 12px var(--neon-pink)!important;}
+p,li,span,div,a,button,input,textarea,label,td,th{font-family:var(--frx-font-body)!important;}
+a{color:var(--neon-cyan)!important;text-decoration:none!important;text-shadow:0 0 8px var(--neon-cyan)!important;}
+a:hover{color:var(--lime)!important;}
