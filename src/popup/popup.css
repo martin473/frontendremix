@@ -29,7 +29,8 @@ body { display: flex; flex-direction: column; max-height: 560px; }
 .frx-status { padding: 8px 14px; font-size: 12px; flex: 0 0 auto; border-bottom: 1px solid var(--frx-border); }
 .frx-status--error { background: rgba(242,114,111,0.14); color: var(--frx-bad); }
 .frx-status--info { background: rgba(108,140,255,0.14); color: var(--frx-accent); }
-.frx-status--ok { background: rgba(78,201,138,0.14.frx-badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; padding: 2px 6px; border-radius: 999px; white-space: nowrap; flex: 0 0 auto; }
+.frx-status--ok { background: rgba(78,201,138,0.14); color: var(--frx-good); }
+.frx-badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; padding: 2px 6px; border-radius: 999px; white-space: nowrap; flex: 0 0 auto; }
 .frx-badge--count { background: var(--frx-panel-2); color: var(--frx-muted); }
 .frx-badge--active { background: rgba(108,140,255,0.18); color: var(--frx-accent); }
 .frx-form { display: flex; gap: 6px; margin-top: 9px; }
