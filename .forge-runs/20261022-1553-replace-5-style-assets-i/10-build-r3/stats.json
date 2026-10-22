@@ -1,0 +1,70 @@
+{
+  "steps": 62,
+  "tool_calls": {
+    "read_file": 4,
+    "run_command": 10,
+    "write_files": 1,
+    "write_file": 31,
+    "append_to_file": 2
+  },
+  "tool_errors": {
+    "write_files": 1,
+    "write_file": 2
+  },
+  "invalid_args": 3,
+  "plain_text_retries": 14,
+  "gave_up_no_tool_format": false,
+  "loop_warnings": 0,
+  "delayed_responses": 1,
+  "placeholder_tool_calls": 0,
+  "task_complete": false,
+  "signed_out": false,
+  "writes": [
+    208.0,
+    428.0,
+    804.0,
+    414.0,
+    247.0,
+    36.0,
+    711.0,
+    419.0,
+    691.0,
+    436.0,
+    545.0,
+    756.0,
+    402.0,
+    123.0,
+    729.0,
+    8.0,
+    381.0,
+    567.0,
+    1013.0,
+    513.0,
+    774.0,
+    426.0,
+    38.0,
+    282.0,
+    827.0,
+    599.0,
+    768.0,
+    382.0,
+    536.0
+  ],
+  "appends": [
+    151.0,
+    186.0
+  ],
+  "responses": {
+    "count": 62,
+    "median_chars": 200,
+    "p90_chars": 687,
+    "echo_of_own_message": 18,
+    "same_as_previous_reply": 0,
+    "stable_after_one_poll": 62
+  },
+  "tool_calls_total": 48,
+  "write_bytes": 14063,
+  "append_bytes": 337,
+  "ended": "cut_off_or_crashed",
+  "health": "degraded: 14 plain-text replies, 18 echoed replies, 3 malformed tool args"
+}
