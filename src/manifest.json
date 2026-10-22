@@ -1,16 +1,10 @@
 {
   "manifest_version": 3,
   "name": "Frontend Remix",
-  "version": "1.1.0",
-  "description": "Detect and swap fonts on any page, and remix the whole page with 5 bundled design styles.",
-  "permissions": [
-    "activeTab",
-    "scripting",
-    "storage"
-  ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
+  "version": "1.0.0",
+  "description": "Detect and swap rendered fonts on any page with any font URL.",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["<all_urls>"],
   "action": {
     "default_title": "Frontend Remix",
     "default_popup": "popup/popup.html",
@@ -24,18 +18,12 @@
     "96": "icons/icon-96.png"
   },
   "background": {
-    "scripts": [
-      "background/background.js"
-    ]
+    "scripts": ["background/background.js"]
   },
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "content/content.js"
-      ],
+      "matches": ["<all_urls>"],
+      "js": ["content/content.js"],
       "run_at": "document_idle",
       "all_frames": false
     }
@@ -45,15 +33,5 @@
       "id": "frontend-remix@martin473.github.io",
       "strict_min_version": "109.0"
     }
-  },
-  "web_accessible_resources": [
-    {
-      "resources": [
-        "assets/*/icons/*.svg"
-      ],
-      "matches": [
-        "<all_urls>"
-      ]
-    }
-  ]
+  }
 }

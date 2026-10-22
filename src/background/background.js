@@ -59,34 +59,8 @@
     // direct font file (.woff2/.woff/.ttf/.otf)
     return { ok: true, family: null, faces: [{ b64: toB64(await r.arrayBuffer()), mime: mimeFor(url, type) }] };
   }
-
-  // ---- page styles: CSS bundles shipped in assets/<style>/, injected with
-  // scripting.insertCSS so the page's own Content-Security-Policy can't block them
-  const STYLES = ["flat", "material", "brutalist", "frutiger-aero", "claymation"];
-  const STYLE_FILES = ["spacing.css", "fonts.css", "borders.css", "buttons.css", "layout.css"];
-  function styleFiles(style) { return STYLE_FILES.map(function (f) { return "assets/" + style + "/" + f; }); }
-  async function removeAllStyles(tabId) {
-    for (const s of STYLES) {
-      try { await api.scripting.removeCSS({ target: { tabId: tabId }, files: styleFiles(s) }); } catch (e) { /* not inserted */ }
-    }
-  }
-  async function selectStyle(tabId, style) {
-    if (style && STYLES.indexOf(style) === -1) return { ok: false, error: "Unknown style: " + style };
-    await removeAllStyles(tabId);
-    if (style) await api.scripting.insertCSS({ target: { tabId: tabId }, files: styleFiles(style) });
-    // content script flips html[data-frx-style] (every rule is scoped to it) and swaps icons
-    const r = await forward(tabId, { type: "FRX_APPLY_STYLE", style: style || "" });
-    return r && r.ok ? { ok: true, style: style || "" } : (r || { ok: false, error: "No response from page" });
-  }
   api.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     if (!msg || typeof msg.type !== "string") return false;
-    if (msg.type === "FRX_SELECT_STYLE") {
-      if (typeof msg.tabId !== "number") { sendResponse({ ok: false, error: "Missing tabId" }); return false; }
-      selectStyle(msg.tabId, msg.style).then(sendResponse, function (e) {
-        sendResponse({ ok: false, error: String(e && e.message ? e.message : e) });
-      });
-      return true;
-    }
     if (msg.type === "FRX_BG_FETCH_FONT") {
       fetchFont(msg.url).then(sendResponse, function (e) {
         sendResponse({ ok: false, error: String(e && e.message ? e.message : e) });
