@@ -71,7 +71,43 @@
     }
   }
 
+
   function tagIcons(style) {
     if (!valid(style)) return;
     var root = document.documentElement;
-    for (var i = 0;
+    for (var i = 0; i < ICONS.length; i++) {
+      var href = assetUrl(style, 'icons/' + ICONS[i] + '.svg');
+      if (href) root.style.setProperty('--frx-icon-' + ICONS[i], 'url(' + href + ')');
+    }
+    root.setAttribute('data-frx-style', style);
+  }
+
+  function clearStyle() {
+    rmLinks();
+    rmIcons();
+    var root = document.documentElement;
+    root.removeAttribute('data-frx-style');
+    for (var i = 0; i < ICONS.length; i++) root.style.removeProperty('--frx-icon-' + ICONS[i]);
+    current = '';
+    return { ok: true, style: '' };
+  }
+
+  function applyStyle(style) {
+    if (!valid(style)) return { ok: false, error: 'Unknown style: ' + String(style) };
+    rmLinks();
+    rmIcons();
+    for (var i = 0; i < FILES.length; i++) addLink(style, FILES[i]);
+    applyIcons(style);
+    tagIcons(style);
+    current = style;
+    return { ok: true, style: style };
+  }
+
+  function getCurrentStyle() { return current; }
+
+  window.__frxStyleEngine = {
+    CATALOG: CATALOG, FILES: FILES, ICONS: ICONS,
+    valid: valid, assetUrl: assetUrl,
+    applyStyle: applyStyle, clearStyle: clearStyle, getCurrentStyle: getCurrentStyle
+  };
+})();
