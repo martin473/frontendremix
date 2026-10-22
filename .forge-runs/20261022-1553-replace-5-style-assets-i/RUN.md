@@ -9,5 +9,6 @@
 | # | Phase | Status | Time | Agent steps | Agent health | Ended | Checks | Verdict | Files +/~/- |
 |---|---|---|---|---|---|---|---|---|---|
 | 1 | plan | gave_up | 142s | 6 | degraded: 3 plain-text replies, 2 echoed replies | gave_up_no_tool_format | 4/5 |  | 0/0/0 |
+| 2 | plan | success | 947s | 48 | degraded: 2 echoed replies, 1 stale replies, 1 malformed tool args, 6 append chunks | task_complete | 4/5 |  | 0/0/0 |
 
 Failing checks at the end: javascript_parses
