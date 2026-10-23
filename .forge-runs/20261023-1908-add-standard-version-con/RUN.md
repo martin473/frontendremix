@@ -9,3 +9,4 @@
 | # | Phase | Status | Time | Agent steps | Agent health | Ended | Checks | Verdict | Files +/~/- |
 |---|---|---|---|---|---|---|---|---|---|
 | 1 | plan | error | 259s | 0 | degraded: DeepSeek signed out | cut_off_or_crashed | 5/5 |  | 0/0/0 |
+| 2 | build-r1 | error | 256s | 0 | degraded: DeepSeek signed out | cut_off_or_crashed | 5/5 |  | 0/0/0 |
