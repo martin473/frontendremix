@@ -1,0 +1,5 @@
+/* Brutalism - borders, shadows, radii */
+*{border-radius:0!important;}
+button,input,select,textarea,.btn,[class*=card],[class*=Card],fieldset,table,img{box-shadow:6px 6px 0 var(--ink)!important;border:3px solid var(--ink)!important;}
+button,input,select,textarea{padding:8px 12px!important;background:var(--paper)!important;color:var(--ink)!important;}
+hr,section{border:0!important;border-top:3px solid var(--ink)!important;}

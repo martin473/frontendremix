@@ -1,8 +1,0 @@
-/* Flat - layout: page surface + card / section treatment */
-html[data-frx-style="flat"] body { background: #ffffff !important; color: #1d2939 !important; }
-html[data-frx-style="flat"] article, html[data-frx-style="flat"] [class*="card" i], html[data-frx-style="flat"] [class*="panel" i] {
-  background: #ffffff !important; box-shadow: none !important;
-  border: 1px solid #e4e7ec !important;
-}
-html[data-frx-style="flat"] article, html[data-frx-style="flat"] [class*="card" i] { padding: calc(var(--frx-unit) * 1.5) !important; }
-html[data-frx-style="flat"] ul[class], html[data-frx-style="flat"] ol[class] { gap: var(--frx-unit); }

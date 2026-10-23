@@ -1,0 +1,5 @@
+/* Swiss buttons */
+button,.btn,[type=button],[type=submit]{background:var(--ink)!important;color:var(--paper)!important;border:1px solid var(--ink)!important;border-radius:0!important;padding:10px 16px!important;font-weight:500!important;text-transform:none!important;cursor:pointer!important;transition:background .15s ease,color .15s ease!important;}
+button:hover,.btn:hover{background:var(--accent)!important;border-color:var(--accent)!important;color:var(--paper)!important;}
+button:focus-visible,.btn:focus-visible,a:focus-visible{outline:2px solid var(--accent)!important;outline-offset:2px!important;}
+@media (prefers-reduced-motion: reduce){button,.btn{transition:none!important;}}
