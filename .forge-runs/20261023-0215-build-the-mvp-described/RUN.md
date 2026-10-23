@@ -9,3 +9,4 @@
 | # | Phase | Status | Time | Agent steps | Agent health | Ended | Checks | Verdict | Files +/~/- |
 |---|---|---|---|---|---|---|---|---|---|
 | 1 | plan | exited_no_completion | 275s | 19 | ok | task_complete | 5/5 |  | 0/0/0 |
+| 2 | build-r1 | exited_no_completion | 733s | 44 | ok | task_complete | 5/5 |  | 0/4/0 |
