@@ -19,3 +19,4 @@
 | 9 | eval-r4 | error | 259s | 0 | degraded: DeepSeek signed out | cut_off_or_crashed | 5/5 | UNREADABLE | 0/0/0 |
 | 10 | build-r5 | error | 256s | 0 | degraded: DeepSeek signed out | cut_off_or_crashed | 5/5 |  | 0/0/0 |
 | 11 | eval-r5 | error | 259s | 0 | degraded: DeepSeek signed out | cut_off_or_crashed | 5/5 | UNREADABLE | 0/0/0 |
+| 12 | build-r6 | error | 256s | 0 | degraded: DeepSeek signed out | cut_off_or_crashed | 5/5 |  | 0/0/0 |
