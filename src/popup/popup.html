@@ -8,8 +8,14 @@
 </head>
 <body>
 <header class="frx-header">
-<h1 class="frx-title">Frontend Remix</h1>
-<p id="frx-page-title" class="frx-page-title">Loading…</p>
+<div class="frx-brand">
+<span class="frx-logo" aria-hidden="true">FR</span>
+<div>
+<h1 id="frx-title" class="frx-title">Frontend Remix</h1>
+<p id="frx-page-title" class="frx-page-title frx-sub">Loading…</p>
+</div>
+</div>
+<button id="frx-refresh-icon" class="frx-icon-btn" type="button" title="Rescan fonts" aria-label="Rescan fonts">↻</button>
 </header>
 
 <section class="frx-style-bar">
@@ -27,6 +33,8 @@
 <button id="frx-reset" class="frx-btn frx-btn--danger" type="button">Reset all</button>
 </div>
 <p id="frx-status" class="frx-status" role="status"></p>
+<p id="frx-loading" class="frx-loading" hidden>Scanning page…</p>
+<p id="frx-empty" class="frx-empty" hidden>No fonts detected on this page.</p>
 <ul id="frx-list" class="frx-list"></ul>
 </main>
 

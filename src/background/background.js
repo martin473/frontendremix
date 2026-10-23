@@ -72,6 +72,20 @@
       forward(msg.tabId, msg.payload).then(sendResponse);
       return true;
     }
+    if (msg.type === "FRX_SET_DEFAULT_STYLE") {
+      const style = typeof msg.style === "string" ? msg.style : "";
+      try { api.storage.local.set({ frxDefaultStyle: style }); sendResponse({ok:true, style:style}); }
+      catch (e) { sendResponse({ok:false, error:String(e && e.message ? e.message : e)}); }
+      return false;
+    }
+    if (msg.type === "FRX_GET_DEFAULT_STYLE") {
+      try {
+        api.storage.local.get({frxDefaultStyle:""}).then(function (res) {
+          sendResponse({ok:true, style:(res && res.frxDefaultStyle) || ""});
+        }, function (e) { sendResponse({ok:false, error:String(e && e.message ? e.message : e)}); });
+      } catch (e) { sendResponse({ok:false, error:String(e && e.message ? e.message : e)}); }
+      return true;
+    }
     if (msg.type === "FRX_BG_GET_TAB") {
       api.tabs.query({active:true, currentWindow:true}).then(function (tabs) {
         const tab = tabs && tabs[0];

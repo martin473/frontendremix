@@ -12,7 +12,8 @@
     refresh: document.getElementById("frx-refresh"),
     stylePicker: document.getElementById("frx-style-picker"),
     styleClear: document.getElementById("frx-style-clear"),
-    styleStatus: document.getElementById("frx-style-status")
+    styleStatus: document.getElementById("frx-style-status"),
+    refreshIcon: document.getElementById("frx-refresh-icon")
   };
   let tabId = null;
   let fonts = [];
@@ -279,6 +280,11 @@
   els.refresh.addEventListener("click", function () {
     load();
   });
+  if (els.refreshIcon) {
+    els.refreshIcon.addEventListener("click", function () {
+      load();
+    });
+  }
 
   els.reset.addEventListener("click", function () {
     els.reset.disabled = true;
