@@ -1,0 +1,272 @@
+[
+  {
+    "path": "assets/bento/borders.css",
+    "bytes": 402,
+    "sha1": "799a9f61d58f"
+  },
+  {
+    "path": "assets/bento/buttons.css",
+    "bytes": 729,
+    "sha1": "ee735c93afba"
+  },
+  {
+    "path": "assets/bento/fonts.css",
+    "bytes": 756,
+    "sha1": "1bd644d040e1"
+  },
+  {
+    "path": "assets/bento/icons/arrow.svg",
+    "bytes": 150,
+    "sha1": "5918b1c2e30b"
+  },
+  {
+    "path": "assets/bento/icons/check.svg",
+    "bytes": 143,
+    "sha1": "5a0bfb6418e3"
+  },
+  {
+    "path": "assets/bento/icons/close.svg",
+    "bytes": 149,
+    "sha1": "4248dc616ac9"
+  },
+  {
+    "path": "assets/bento/icons/settings.svg",
+    "bytes": 190,
+    "sha1": "659846acc89d"
+  },
+  {
+    "path": "assets/bento/layout.css",
+    "bytes": 567,
+    "sha1": "587d17528a38"
+  },
+  {
+    "path": "assets/bento/spacing.css",
+    "bytes": 381,
+    "sha1": "2261bca997fd"
+  },
+  {
+    "path": "assets/brutalism/borders.css",
+    "bytes": 428,
+    "sha1": "f7b21e9641d8"
+  },
+  {
+    "path": "assets/brutalism/buttons.css",
+    "bytes": 804,
+    "sha1": "390d3e4f9118"
+  },
+  {
+    "path": "assets/brutalism/fonts.css",
+    "bytes": 1252,
+    "sha1": "20a203a20c1e"
+  },
+  {
+    "path": "assets/brutalism/icons/arrow.svg",
+    "bytes": 150,
+    "sha1": "5918b1c2e30b"
+  },
+  {
+    "path": "assets/brutalism/icons/check.svg",
+    "bytes": 143,
+    "sha1": "5a0bfb6418e3"
+  },
+  {
+    "path": "assets/brutalism/icons/close.svg",
+    "bytes": 149,
+    "sha1": "4248dc616ac9"
+  },
+  {
+    "path": "assets/brutalism/icons/settings.svg",
+    "bytes": 190,
+    "sha1": "659846acc89d"
+  },
+  {
+    "path": "assets/brutalism/layout.css",
+    "bytes": 920,
+    "sha1": "3c3da7a60643"
+  },
+  {
+    "path": "assets/brutalism/spacing.css",
+    "bytes": 414,
+    "sha1": "26f7801cff6a"
+  },
+  {
+    "path": "assets/editorial/borders.css",
+    "bytes": 513,
+    "sha1": "3061b4ac49e1"
+  },
+  {
+    "path": "assets/editorial/buttons.css",
+    "bytes": 774,
+    "sha1": "a4bd290ea6f1"
+  },
+  {
+    "path": "assets/editorial/fonts.css",
+    "bytes": 1013,
+    "sha1": "872dbeca0c62"
+  },
+  {
+    "path": "assets/editorial/icons/arrow.svg",
+    "bytes": 150,
+    "sha1": "5918b1c2e30b"
+  },
+  {
+    "path": "assets/editorial/icons/check.svg",
+    "bytes": 143,
+    "sha1": "5a0bfb6418e3"
+  },
+  {
+    "path": "assets/editorial/icons/close.svg",
+    "bytes": 149,
+    "sha1": "4248dc616ac9"
+  },
+  {
+    "path": "assets/editorial/icons/settings.svg",
+    "bytes": 190,
+    "sha1": "659846acc89d"
+  },
+  {
+    "path": "assets/editorial/layout.css",
+    "bytes": 619,
+    "sha1": "d5fadac37377"
+  },
+  {
+    "path": "assets/editorial/spacing.css",
+    "bytes": 426,
+    "sha1": "6aab067158fa"
+  },
+  {
+    "path": "assets/retro-y2k/borders.css",
+    "bytes": 599,
+    "sha1": "2d473f336015"
+  },
+  {
+    "path": "assets/retro-y2k/buttons.css",
+    "bytes": 768,
+    "sha1": "579101e2962e"
+  },
+  {
+    "path": "assets/retro-y2k/fonts.css",
+    "bytes": 827,
+    "sha1": "49e1b6ed290b"
+  },
+  {
+    "path": "assets/retro-y2k/icons/arrow.svg",
+    "bytes": 150,
+    "sha1": "5918b1c2e30b"
+  },
+  {
+    "path": "assets/retro-y2k/icons/check.svg",
+    "bytes": 143,
+    "sha1": "5a0bfb6418e3"
+  },
+  {
+    "path": "assets/retro-y2k/icons/close.svg",
+    "bytes": 149,
+    "sha1": "4248dc616ac9"
+  },
+  {
+    "path": "assets/retro-y2k/icons/settings.svg",
+    "bytes": 190,
+    "sha1": "659846acc89d"
+  },
+  {
+    "path": "assets/retro-y2k/layout.css",
+    "bytes": 536,
+    "sha1": "4c3634fcbdf9"
+  },
+  {
+    "path": "assets/retro-y2k/spacing.css",
+    "bytes": 382,
+    "sha1": "1c72b7f2fe00"
+  },
+  {
+    "path": "assets/swiss/borders.css",
+    "bytes": 419,
+    "sha1": "7fcc9f352fa0"
+  },
+  {
+    "path": "assets/swiss/buttons.css",
+    "bytes": 691,
+    "sha1": "c8c53176cc08"
+  },
+  {
+    "path": "assets/swiss/fonts.css",
+    "bytes": 711,
+    "sha1": "65736c8ddede"
+  },
+  {
+    "path": "assets/swiss/icons/arrow.svg",
+    "bytes": 150,
+    "sha1": "5918b1c2e30b"
+  },
+  {
+    "path": "assets/swiss/icons/check.svg",
+    "bytes": 143,
+    "sha1": "5a0bfb6418e3"
+  },
+  {
+    "path": "assets/swiss/icons/close.svg",
+    "bytes": 149,
+    "sha1": "4248dc616ac9"
+  },
+  {
+    "path": "assets/swiss/icons/settings.svg",
+    "bytes": 190,
+    "sha1": "659846acc89d"
+  },
+  {
+    "path": "assets/swiss/layout.css",
+    "bytes": 545,
+    "sha1": "29d4eff02506"
+  },
+  {
+    "path": "assets/swiss/spacing.css",
+    "bytes": 436,
+    "sha1": "3fc9d3965a78"
+  },
+  {
+    "path": "background/background.js",
+    "bytes": 4791,
+    "sha1": "54872aa48fff"
+  },
+  {
+    "path": "content/content.js",
+    "bytes": 11859,
+    "sha1": "5c43b5ec2250"
+  },
+  {
+    "path": "content/style-engine.js",
+    "bytes": 4361,
+    "sha1": "f82aa16d76bb"
+  },
+  {
+    "path": "icons/icon-48.png",
+    "bytes": 513,
+    "sha1": "70468a3754ed"
+  },
+  {
+    "path": "icons/icon-96.png",
+    "bytes": 953,
+    "sha1": "54cb2dd82bc5"
+  },
+  {
+    "path": "manifest.json",
+    "bytes": 934,
+    "sha1": "e541ded40023"
+  },
+  {
+    "path": "popup/popup.css",
+    "bytes": 5656,
+    "sha1": "fe88b18f936f"
+  },
+  {
+    "path": "popup/popup.html",
+    "bytes": 1086,
+    "sha1": "be6d58bdfe67"
+  },
+  {
+    "path": "popup/popup.js",
+    "bytes": 13495,
+    "sha1": "68502056b971"
+  }
+]
