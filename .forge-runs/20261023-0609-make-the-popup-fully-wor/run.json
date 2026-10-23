@@ -3,7 +3,7 @@
   "branch": "forge/run-20261023-0609-make-the-popup-fully-wor",
   "task": "Make the popup fully work exactly as described in the design doc: fix the popup crash, wire the Style dropdown, show every installed font via the native helper copied from .forge/reference/native, Firefox site-access button, manifest updates. Change nothing else.",
   "started": "2026-10-23T06:09:21.156527+00:00",
-  "finished": null,
+  "finished": "2026-10-23T06:19:53.601558+00:00",
   "host": "ubuntu-s-1vcpu-1gb-nyc1",
   "orchestrator_sha1": "32eee16ef1bf",
   "args": {
@@ -115,6 +115,6 @@
       "telemetry": ".forge-runs/20261023-0609-make-the-popup-fully-wor/03-eval-r1/"
     }
   ],
-  "outcome": null,
-  "merged_to_main": false
+  "outcome": "MVP_COMPLETE",
+  "merged_to_main": true
 }
