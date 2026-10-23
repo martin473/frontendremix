@@ -188,6 +188,34 @@
       },
       "note": null,
       "telemetry": ".forge-runs/20261023-1908-add-standard-version-con/06-build-r3/"
+    },
+    {
+      "seq": 7,
+      "phase": "eval-r3",
+      "round": 3,
+      "status": "error",
+      "wall_seconds": 258.9,
+      "trace_id": "546c7832-5c09-4d06-9165-740ec8d03585",
+      "verdict": "UNREADABLE",
+      "checks_passed": 5,
+      "checks_total": 5,
+      "checks_failed": [],
+      "files": {
+        "added": [],
+        "removed": [],
+        "modified": []
+      },
+      "file_count": 56,
+      "agent": {
+        "steps": 0,
+        "tool_calls_total": 0,
+        "plain_text_retries": 0,
+        "invalid_args": 0,
+        "ended": "cut_off_or_crashed",
+        "health": "degraded: DeepSeek signed out"
+      },
+      "note": null,
+      "telemetry": ".forge-runs/20261023-1908-add-standard-version-con/07-eval-r3/"
     }
   ],
   "outcome": null,
