@@ -50,6 +50,34 @@
       },
       "note": null,
       "telemetry": ".forge-runs/20261023-0541-fix-firefox-compatibilit/01-plan/"
+    },
+    {
+      "seq": 2,
+      "phase": "build-r1",
+      "round": 1,
+      "status": "exited_no_completion",
+      "wall_seconds": 48.4,
+      "trace_id": "9b425f36-97a1-48c9-8910-70067331d9af",
+      "verdict": null,
+      "checks_passed": 5,
+      "checks_total": 5,
+      "checks_failed": [],
+      "files": {
+        "added": [],
+        "removed": [],
+        "modified": []
+      },
+      "file_count": 54,
+      "agent": {
+        "steps": 7,
+        "tool_calls_total": 4,
+        "plain_text_retries": 2,
+        "invalid_args": 0,
+        "ended": "task_complete",
+        "health": "ok"
+      },
+      "note": null,
+      "telemetry": ".forge-runs/20261023-0541-fix-firefox-compatibilit/02-build-r1/"
     }
   ],
   "outcome": null,
