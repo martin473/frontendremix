@@ -3,7 +3,7 @@
   "branch": "forge/run-20261023-0541-fix-firefox-compatibilit",
   "task": "Fix Firefox compatibility exactly as described in the design doc: add background.scripts next to background.service_worker, add browser_specific_settings.gecko, bump version to 1.1.1. Change nothing else.",
   "started": "2026-10-23T05:41:35.862392+00:00",
-  "finished": null,
+  "finished": "2026-10-23T05:45:36.489048+00:00",
   "host": "ubuntu-s-1vcpu-1gb-nyc1",
   "orchestrator_sha1": "32eee16ef1bf",
   "args": {
@@ -108,6 +108,6 @@
       "telemetry": ".forge-runs/20261023-0541-fix-firefox-compatibilit/03-eval-r1/"
     }
   ],
-  "outcome": null,
-  "merged_to_main": false
+  "outcome": "MVP_COMPLETE",
+  "merged_to_main": true
 }
