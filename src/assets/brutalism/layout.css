@@ -1,4 +1,11 @@
-/* Brutalism - 12-col grid, section rules */
-body{max-width:1280px!important;margin:0 auto!important;padding:var(--frx-space-4)!important;}
+/* Brutalism - 12-col grid, 4px base, section rules */
+body{max-width:1280px!important;margin:0 auto!important;padding:16px!important;}
 main,section,.container,.wrapper{display:block!important;width:100%!important;}
-[class*=grid]{display:grid!
+[class*=grid]{display:grid!important;grid-template-columns:repeat(12,minmax(0,1fr))!important;gap:16px!important;}
+[class*=col-1]{grid-column:span 1!important;} [class*=col-2]{grid-column:span 2!important;}
+[class*=col-3]{grid-column:span 3!important;} [class*=col-4]{grid-column:span 4!important;}
+[class*=col-6]{grid-column:span 6!important;} [class*=col-8]{grid-column:span 8!important;}
+[class*=col-12]{grid-column:span 12!important;}
+section{border-top:3px solid var(--ink)!important;}
+hr{border:0!important;border-top:3px solid var(--ink)!important;margin:16px 0!important;}
+@media (max-width:768px){[class*=grid]{grid-template-columns:1fr!important;} [class*=col-]{grid-column:span 1!important;}}
