@@ -10,3 +10,4 @@
 |---|---|---|---|---|---|---|---|---|---|
 | 1 | plan | exited_no_completion | 275s | 19 | ok | task_complete | 5/5 |  | 0/0/0 |
 | 2 | build-r1 | exited_no_completion | 733s | 44 | ok | task_complete | 5/5 |  | 0/4/0 |
+| 3 | eval-r1 | exited_no_completion | 499s | 30 | ok | task_complete | 5/5 | MVP_COMPLETE | 0/0/0 |

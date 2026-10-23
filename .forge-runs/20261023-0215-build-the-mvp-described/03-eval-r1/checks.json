@@ -1,0 +1,248 @@
+{
+  "files": [
+    {
+      "path": "assets/bento/borders.css",
+      "bytes": 402
+    },
+    {
+      "path": "assets/bento/buttons.css",
+      "bytes": 729
+    },
+    {
+      "path": "assets/bento/fonts.css",
+      "bytes": 756
+    },
+    {
+      "path": "assets/bento/icons/arrow.svg",
+      "bytes": 150
+    },
+    {
+      "path": "assets/bento/icons/check.svg",
+      "bytes": 143
+    },
+    {
+      "path": "assets/bento/icons/close.svg",
+      "bytes": 149
+    },
+    {
+      "path": "assets/bento/icons/settings.svg",
+      "bytes": 190
+    },
+    {
+      "path": "assets/bento/layout.css",
+      "bytes": 567
+    },
+    {
+      "path": "assets/bento/spacing.css",
+      "bytes": 381
+    },
+    {
+      "path": "assets/brutalism/borders.css",
+      "bytes": 428
+    },
+    {
+      "path": "assets/brutalism/buttons.css",
+      "bytes": 804
+    },
+    {
+      "path": "assets/brutalism/fonts.css",
+      "bytes": 1252
+    },
+    {
+      "path": "assets/brutalism/icons/arrow.svg",
+      "bytes": 150
+    },
+    {
+      "path": "assets/brutalism/icons/check.svg",
+      "bytes": 143
+    },
+    {
+      "path": "assets/brutalism/icons/close.svg",
+      "bytes": 149
+    },
+    {
+      "path": "assets/brutalism/icons/settings.svg",
+      "bytes": 190
+    },
+    {
+      "path": "assets/brutalism/layout.css",
+      "bytes": 920
+    },
+    {
+      "path": "assets/brutalism/spacing.css",
+      "bytes": 414
+    },
+    {
+      "path": "assets/editorial/borders.css",
+      "bytes": 513
+    },
+    {
+      "path": "assets/editorial/buttons.css",
+      "bytes": 774
+    },
+    {
+      "path": "assets/editorial/fonts.css",
+      "bytes": 1013
+    },
+    {
+      "path": "assets/editorial/icons/arrow.svg",
+      "bytes": 150
+    },
+    {
+      "path": "assets/editorial/icons/check.svg",
+      "bytes": 143
+    },
+    {
+      "path": "assets/editorial/icons/close.svg",
+      "bytes": 149
+    },
+    {
+      "path": "assets/editorial/icons/settings.svg",
+      "bytes": 190
+    },
+    {
+      "path": "assets/editorial/layout.css",
+      "bytes": 619
+    },
+    {
+      "path": "assets/editorial/spacing.css",
+      "bytes": 426
+    },
+    {
+      "path": "assets/retro-y2k/borders.css",
+      "bytes": 599
+    },
+    {
+      "path": "assets/retro-y2k/buttons.css",
+      "bytes": 768
+    },
+    {
+      "path": "assets/retro-y2k/fonts.css",
+      "bytes": 827
+    },
+    {
+      "path": "assets/retro-y2k/icons/arrow.svg",
+      "bytes": 150
+    },
+    {
+      "path": "assets/retro-y2k/icons/check.svg",
+      "bytes": 143
+    },
+    {
+      "path": "assets/retro-y2k/icons/close.svg",
+      "bytes": 149
+    },
+    {
+      "path": "assets/retro-y2k/icons/settings.svg",
+      "bytes": 190
+    },
+    {
+      "path": "assets/retro-y2k/layout.css",
+      "bytes": 536
+    },
+    {
+      "path": "assets/retro-y2k/spacing.css",
+      "bytes": 382
+    },
+    {
+      "path": "assets/swiss/borders.css",
+      "bytes": 419
+    },
+    {
+      "path": "assets/swiss/buttons.css",
+      "bytes": 691
+    },
+    {
+      "path": "assets/swiss/fonts.css",
+      "bytes": 711
+    },
+    {
+      "path": "assets/swiss/icons/arrow.svg",
+      "bytes": 150
+    },
+    {
+      "path": "assets/swiss/icons/check.svg",
+      "bytes": 143
+    },
+    {
+      "path": "assets/swiss/icons/close.svg",
+      "bytes": 149
+    },
+    {
+      "path": "assets/swiss/icons/settings.svg",
+      "bytes": 190
+    },
+    {
+      "path": "assets/swiss/layout.css",
+      "bytes": 545
+    },
+    {
+      "path": "assets/swiss/spacing.css",
+      "bytes": 436
+    },
+    {
+      "path": "background/background.js",
+      "bytes": 5560
+    },
+    {
+      "path": "content/content.js",
+      "bytes": 11859
+    },
+    {
+      "path": "content/style-engine.js",
+      "bytes": 4361
+    },
+    {
+      "path": "icons/icon-48.png",
+      "bytes": 513
+    },
+    {
+      "path": "icons/icon-96.png",
+      "bytes": 953
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 934
+    },
+    {
+      "path": "popup/popup.css",
+      "bytes": 6936
+    },
+    {
+      "path": "popup/popup.html",
+      "bytes": 1477
+    },
+    {
+      "path": "popup/popup.js",
+      "bytes": 13668
+    }
+  ],
+  "checks": [
+    {
+      "name": "files_written",
+      "ok": true,
+      "detail": "54 file(s) in build dir"
+    },
+    {
+      "name": "manifest_json_valid",
+      "ok": true,
+      "detail": "valid JSON, name=Frontend Remix, version=1.1.0"
+    },
+    {
+      "name": "no_empty_sources",
+      "ok": true,
+      "detail": "all source files non-empty"
+    },
+    {
+      "name": "javascript_parses",
+      "ok": true,
+      "detail": "all 4 JS file(s) parse OK"
+    },
+    {
+      "name": "required_files_present",
+      "ok": true,
+      "detail": "all present"
+    }
+  ],
+  "pass": true
+}
