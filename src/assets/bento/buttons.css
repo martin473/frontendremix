@@ -1,0 +1,7 @@
+/* Bento buttons */
+:root{--bento-hover:#0062C4;}
+button,.btn,[type=button],[type=submit]{background:var(--accent)!important;color:var(--tile)!important;border:0!important;border-radius:999px!important;padding:12px 20px!important;font-weight:600!important;cursor:pointer!important;box-shadow:0 1px 3px rgba(0,0,0,0.12)!important;transition:background .18s ease,transform .12s ease!important;}
+button:hover,.btn:hover{background:var(--bento-hover)!important;}
+button:active,.btn:active{transform:scale(0.98)!important;}
+button:focus-visible,.btn:focus-visible,a:focus-visible{outline:2px solid var(--accent)!important;outline-offset:3px!important;}
+@media (prefers-reduced-motion: reduce){button,.btn{transition:none!important;}}

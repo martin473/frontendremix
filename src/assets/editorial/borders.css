@@ -1,0 +1,5 @@
+*{border-radius:0!important;box-shadow:none!important;}
+button,input,select,textarea,.btn{border:1px solid var(--rule)!important;background:var(--paper)!important;color:var(--ink)!important;padding:10px 14px!important;}
+hr,section,article{border:0!important;border-top:1px solid var(--rule)!important;}
+table,td,th{border-bottom:1px solid var(--rule)!important;border-collapse:collapse!important;}
+blockquote{border-left:2px solid var(--accent)!important;padding-left:24px!important;font-style:italic!important;}

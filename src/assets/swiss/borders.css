@@ -1,0 +1,5 @@
+/* Swiss borders and rules */
+*{border-radius:0!important;box-shadow:none!important;}
+button,input,select,textarea,.btn{border:1px solid var(--ink)!important;background:var(--paper)!important;color:var(--ink)!important;padding:8px 12px!important;}
+hr,section,article{border:0!important;border-top:1px solid var(--grey)!important;}
+table,td,th{border:1px solid var(--grey)!important;border-collapse:collapse!important;}

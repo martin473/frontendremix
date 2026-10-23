@@ -1,0 +1,10 @@
+/* Bento typography tokens */
+:root{
+  --bg:#F5F5F7;--tile:#FFFFFF;--tile-dark:#1D1D1F;--text:#1D1D1F;--muted:#6E6E73;--accent:#0071E3;
+  --frx-font:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Inter,Roboto,Helvetica,Arial,sans-serif;
+}
+body{font-family:var(--frx-font)!important;background:var(--bg)!important;color:var(--text)!important;line-height:1.5!important;}
+h1,h2,h3,h4,h5,h6{font-family:var(--frx-font)!important;font-weight:700!important;letter-spacing:-0.02em!important;line-height:1.15!important;color:var(--text)!important;}
+p,li,span,div,a,button,input,textarea,label,td,th{font-family:var(--frx-font)!important;}
+a{color:var(--accent)!important;text-decoration:none!important;}
+a:hover{text-decoration:underline!important;}

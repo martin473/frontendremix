@@ -1,0 +1,4 @@
+button,.btn,[type=button],[type=submit]{background:var(--ink)!important;color:var(--paper)!important;border:1px solid var(--ink)!important;border-radius:0!important;padding:12px 20px!important;font-family:var(--frx-font-body)!important;font-size:16px!important;font-weight:600!important;letter-spacing:0.04em!important;text-transform:uppercase!important;cursor:pointer!important;transition:background .2s ease,color .2s ease!important;}
+button:hover,.btn:hover{background:var(--accent)!important;border-color:var(--accent)!important;color:var(--paper)!important;}
+button:focus-visible,.btn:focus-visible,a:focus-visible{outline:2px solid var(--accent)!important;outline-offset:3px!important;}
+@media (prefers-reduced-motion: reduce){button,.btn{transition:none!important;}}

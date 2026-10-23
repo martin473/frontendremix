@@ -1,0 +1,68 @@
+{
+  "files": [
+    {
+      "path": "background/background.js",
+      "bytes": 4764
+    },
+    {
+      "path": "content/content.js",
+      "bytes": 11340
+    },
+    {
+      "path": "content/style-engine.js",
+      "bytes": 3206
+    },
+    {
+      "path": "icons/icon-48.png",
+      "bytes": 513
+    },
+    {
+      "path": "icons/icon-96.png",
+      "bytes": 953
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 905
+    },
+    {
+      "path": "popup/popup.css",
+      "bytes": 4550
+    },
+    {
+      "path": "popup/popup.html",
+      "bytes": 993
+    },
+    {
+      "path": "popup/popup.js",
+      "bytes": 10951
+    }
+  ],
+  "checks": [
+    {
+      "name": "files_written",
+      "ok": true,
+      "detail": "9 file(s) in build dir"
+    },
+    {
+      "name": "manifest_json_valid",
+      "ok": true,
+      "detail": "valid JSON, name=Frontend Remix, version=1.0.0"
+    },
+    {
+      "name": "no_empty_sources",
+      "ok": true,
+      "detail": "all source files non-empty"
+    },
+    {
+      "name": "javascript_parses",
+      "ok": false,
+      "detail": "content/style-engine.js: /opt/forge-working/build/content/style-engine.js:16\nfunction applyIcons(s){var css='';for(var i=0;i<ICONS.length;i++){va"
+    },
+    {
+      "name": "required_files_present",
+      "ok": true,
+      "detail": "all present"
+    }
+  ],
+  "pass": false
+}

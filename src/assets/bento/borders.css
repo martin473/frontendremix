@@ -1,0 +1,5 @@
+/* Bento tiles: radius, no borders, subtle shadow */
+*{border:0!important;}
+[class*=card],[class*=Card],[class*=tile],section,article,button,input,select,textarea,.btn{background:var(--tile)!important;border-radius:24px!important;box-shadow:0 2px 8px rgba(0,0,0,0.06)!important;}
+button,input,select,textarea{padding:12px 16px!important;color:var(--text)!important;}
+img{border-radius:16px!important;}

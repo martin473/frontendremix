@@ -1,0 +1,6 @@
+/* Brutalism - 4px grid spacing */
+:root{--frx-space-1:4px;--frx-space-2:8px;--frx-space-3:12px;--frx-space-4:16px;--frx-space-5:24px;--frx-space-6:32px;--frx-space-7:48px;}
+body{margin:0!important;}
+p,ul,ol{margin:0 0 var(--frx-space-3) 0!important;line-height:1.5!important;}
+h1,h2,h3,h4,h5,h6{margin:0 0 var(--frx-space-4) 0!important;}
+section,article,header,footer,main{padding:var(--frx-space-5)!important;}

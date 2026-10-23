@@ -1,0 +1,47 @@
+[
+  {
+    "path": "background/background.js",
+    "bytes": 4764,
+    "sha1": "0ce65c7e850a"
+  },
+  {
+    "path": "content/content.js",
+    "bytes": 11859,
+    "sha1": "5c43b5ec2250"
+  },
+  {
+    "path": "content/style-engine.js",
+    "bytes": 247,
+    "sha1": "bde848129d99"
+  },
+  {
+    "path": "icons/icon-48.png",
+    "bytes": 513,
+    "sha1": "70468a3754ed"
+  },
+  {
+    "path": "icons/icon-96.png",
+    "bytes": 953,
+    "sha1": "54cb2dd82bc5"
+  },
+  {
+    "path": "manifest.json",
+    "bytes": 904,
+    "sha1": "571a937b6668"
+  },
+  {
+    "path": "popup/popup.css",
+    "bytes": 4550,
+    "sha1": "102c2432b2f8"
+  },
+  {
+    "path": "popup/popup.html",
+    "bytes": 14,
+    "sha1": "38ea5adc255e"
+  },
+  {
+    "path": "popup/popup.js",
+    "bytes": 11392,
+    "sha1": "3e95596aa128"
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "steps": 15,
+  "tool_calls": {
+    "read_file": 6,
+    "run_command": 3,
+    "write_file": 1
+  },
+  "tool_errors": {
+    "run_command": 1
+  },
+  "invalid_args": 0,
+  "plain_text_retries": 5,
+  "gave_up_no_tool_format": true,
+  "loop_warnings": 0,
+  "delayed_responses": 1,
+  "placeholder_tool_calls": 0,
+  "task_complete": false,
+  "signed_out": false,
+  "writes": [
+    247.0
+  ],
+  "appends": [],
+  "responses": {
+    "count": 15,
+    "median_chars": 173,
+    "p90_chars": 296,
+    "echo_of_own_message": 2,
+    "same_as_previous_reply": 0,
+    "stable_after_one_poll": 15
+  },
+  "tool_calls_total": 10,
+  "write_bytes": 247,
+  "append_bytes": 0,
+  "ended": "gave_up_no_tool_format",
+  "health": "degraded: 5 plain-text replies, 2 echoed replies"
+}
