@@ -100,9 +100,9 @@
   }
 
   function showState(state) {
-    els.loading.hidden = state !== "loading";
-    els.list.hidden = state !== "list";
-    els.empty.hidden = state !== "empty";
+    if (els.loading) els.loading.hidden = state !== "loading";
+    if (els.list) els.list.hidden = state !== "list";
+    if (els.empty) els.empty.hidden = state !== "empty";
   }
 
   function updateResetState() {
