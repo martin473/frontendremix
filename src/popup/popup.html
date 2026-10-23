@@ -1,50 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Frontend Remix</title>
-  <link rel="stylesheet" href="popup.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Frontend Remix</title>
+<link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <header class="frx-header">
-    <div class="frx-brand">
-      <span class="frx-logo">FR</span>
-      <div><h1>Frontend Remix</h1><p id="frx-page-title" class="frx-sub">Detecting fonts...</p></div>
-    </div>
-    <button id="frx-refresh" class="frx-icon-btn" title="Rescan page">&#8635;</button>
-  </header>
-  <section class="frx-styles" aria-label="Page style">
-    <div class="frx-styles-head"><span>Page style</span>
-      <button id="frx-style-none" class="frx-clear" type="button" hidden>Remove style</button></div>
-    <div id="frx-style-grid" class="frx-style-grid">
-      <button class="frx-style" data-style="flat" type="button"><span class="frx-swatch frx-swatch--flat"><i></i></span>Flat</button>
-      <button class="frx-style" data-style="material" type="button"><span class="frx-swatch frx-swatch--material"><i></i></span>Material</button>
-      <button class="frx-style" data-style="brutalist" type="button"><span class="frx-swatch frx-swatch--brutalist"><i></i></span>Brutalist</button>
-      <button class="frx-style" data-style="frutiger-aero" type="button"><span class="frx-swatch frx-swatch--frutiger-aero"><i></i></span>Aero</button>
-      <button class="frx-style" data-style="claymation" type="button"><span class="frx-swatch frx-swatch--claymation"><i></i></span>Clay</button>
-    </div>
-  </section>
-  <div id="frx-status" class="frx-status" hidden></div>
-  <main id="frx-content" class="frx-content">
-    <div id="frx-loading" class="frx-empty">Scanning the page for fonts...</div>
-    <ul id="frx-list" class="frx-list" hidden></ul>
-    <div id="frx-empty" class="frx-empty" hidden>No rendered fonts detected on this page.</div>
-  </main>
-  <section id="frx-import" class="frx-import" hidden>
-    <p><strong>See every font on your Mac.</strong> Firefox can't list installed fonts for extensions, so grab the list once:</p>
-    <ol>
-      <li>Open Terminal and run <button id="frx-import-copy" class="frx-clear" type="button">Copy command</button>
-        <code id="frx-import-cmd"></code></li>
-      <li>Paste the result here (Cmd+V) and Save.</li>
-    </ol>
-    <textarea id="frx-import-text" class="frx-input" rows="4" placeholder="Paste your font list here"></textarea>
-    <div class="frx-import-row"><span id="frx-import-note" class="frx-import-note"></span>
-      <button id="frx-import-save" class="frx-btn frx-btn--primary" type="button">Save</button></div>
-  </section>
-  <footer class="frx-footer">
-    <button id="frx-import-toggle" class="frx-clear" type="button">Import all my fonts</button>
-    <button id="frx-reset" class="frx-btn frx-btn-ghost" disabled>Reset all overrides</button>
-  </footer>
-  <script src="popup.js"></script>
+<header class="frx-header">
+<h1 class="frx-title">Frontend Remix</h1>
+<p id="frx-page-title" class="frx-page-title">Loading…</p>
+</header>
+
+<section class="frx-style-bar">
+<label for="frx-style-picker">Style</label>
+<select id="frx-style-picker" aria-label="Choose a design style">
+<option value="">None</option>
+</select>
+<button id="frx-style-clear" class="frx-btn frx-btn--style" type="button">Clear</button>
+<p id="frx-style-status" class="frx-style-status" role="status"></p>
+</section>
+
+<main class="frx-main">
+<div class="frx-toolbar">
+<button id="frx-refresh" class="frx-btn" type="button">Refresh</button>
+<button id="frx-reset" class="frx-btn frx-btn--danger" type="button">Reset all</button>
+</div>
+<p id="frx-status" class="frx-status" role="status"></p>
+<ul id="frx-list" class="frx-list"></ul>
+</main>
+
+<script src="popup.js"></script>
 </body>
 </html>

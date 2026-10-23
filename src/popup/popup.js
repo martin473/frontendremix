@@ -9,10 +9,24 @@
     list: document.getElementById("frx-list"),
     empty: document.getElementById("frx-empty"),
     reset: document.getElementById("frx-reset"),
-    refresh: document.getElementById("frx-refresh")
+    refresh: document.getElementById("frx-refresh"),
+    stylePicker: document.getElementById("frx-style-picker"),
+    styleClear: document.getElementById("frx-style-clear"),
+    styleStatus: document.getElementById("frx-style-status")
   };
   let tabId = null;
   let fonts = [];
+
+  // ---- style catalog (mirrors content/style-engine.js CATALOG)
+  const STYLES = {
+    "brutalism": "Brutalism",
+    "swiss": "Swiss",
+    "bento": "Bento Grid",
+    "editorial": "Editorial",
+    "retro-y2k": "Retro / Y2K"
+  };
+  let currentStyle = "";
+
 
   // ---- system fonts: no download, so no site's security policy can block them.
   // Firefox doesn't let extensions list installed fonts, so we test a broad list
@@ -49,89 +63,10 @@
       });
     });
   }
-  // Fonts the user imported from their Mac (every installed family) - see the
-  // "Import all my fonts" panel. Saved in extension storage, so it's a one-time step.
-  let importedFonts = [];
-  async function loadImportedFonts() {
-    try {
-      const got = await api.storage.local.get("frxImportedFonts");
-      importedFonts = Array.isArray(got.frxImportedFonts) ? got.frxImportedFonts : [];
-    } catch (e) { importedFonts = []; }
-  }
   let systemFonts = null;
   function getSystemFonts() {
-    if (!systemFonts) {
-      const set = new Set(importedFonts.concat(detectInstalledFonts()));
-      systemFonts = Array.from(set).sort(function (a, b) {
-        const ga = GENERIC.has(a), gb = GENERIC.has(b);
-        if (ga !== gb) return ga ? 1 : -1;            // generic families last
-        return a.localeCompare(b, undefined, { sensitivity: "base" });
-      });
-    }
+    if (!systemFonts) systemFonts = detectInstalledFonts();
     return systemFonts;
-  }
-  function cssFamily(name) { return GENERIC.has(name) ? name : '"' + name.replace(/"/g, "") + '"'; }
-
-  // ---- searchable font picker, every name drawn in its own typeface
-  let openPanel = null;
-  function closePanel() { if (openPanel) { openPanel.remove(); openPanel = null; } }
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closePanel(); });
-
-  function buildPicker(font, onPick) {
-    const wrap = el("div", "frx-pick");
-    const btn = el("button", "frx-input frx-pick-btn");
-    btn.type = "button";
-    let chosen = font.overrideSystem || "";
-    function paintBtn() {
-      btn.textContent = chosen || "Pick a font\u2026";
-      btn.style.fontFamily = chosen ? cssFamily(chosen) : "";
-    }
-    paintBtn();
-    btn.addEventListener("click", function () {
-      if (openPanel && openPanel.parentNode === wrap) { closePanel(); return; }
-      closePanel();
-      const panel = el("div", "frx-pick-panel");
-      const search = el("input", "frx-input frx-pick-search");
-      search.type = "search";
-      const all = getSystemFonts();
-      search.placeholder = "Search " + all.length + " fonts\u2026";
-      const list = el("ul", "frx-pick-list");
-      // only style rows once they scroll into view: thousands of fonts stay fast
-      const io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          if (en.isIntersecting) { en.target.style.fontFamily = cssFamily(en.target.dataset.font); io.unobserve(en.target); }
-        });
-      }, { root: list });
-      function render() {
-        const q = search.value.trim().toLowerCase();
-        list.innerHTML = "";
-        const hits = q ? all.filter(function (n) { return n.toLowerCase().indexOf(q) !== -1; }) : all;
-        hits.slice(0, 500).forEach(function (name) {
-          const li = el("li", "frx-pick-item" + (name === chosen ? " frx-pick-item--on" : ""), name);
-          li.dataset.font = name;
-          li.title = name;
-          li.addEventListener("click", function () {
-            chosen = name; paintBtn(); closePanel(); onPick(name);
-          });
-          list.appendChild(li);
-          io.observe(li);
-        });
-        if (!hits.length) list.appendChild(el("li", "frx-pick-empty", "No installed font matches \u201c" + search.value + "\u201d"));
-        else if (hits.length > 500) list.appendChild(el("li", "frx-pick-empty", (hits.length - 500) + " more \u2014 keep typing to narrow down"));
-      }
-      search.addEventListener("input", render);
-      search.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") { e.preventDefault(); const first = list.querySelector(".frx-pick-item"); if (first) first.click(); }
-      });
-      panel.appendChild(search);
-      panel.appendChild(list);
-      wrap.appendChild(panel);
-      openPanel = panel;
-      render();
-      search.focus();
-    });
-    wrap.appendChild(btn);
-    return { node: wrap, value: function () { return chosen; } };
   }
 
   function setStatus(message, kind) {
@@ -165,9 +100,9 @@
   }
 
   function showState(state) {
-    els.loading.hidden = state !== "loading";
-    els.list.hidden = state !== "list";
-    els.empty.hidden = state !== "empty";
+    if (els.loading) els.loading.hidden = state !== "loading";
+    if (els.list) els.list.hidden = state !== "list";
+    if (els.empty) els.empty.hidden = state !== "empty";
   }
 
   function updateResetState() {
@@ -207,16 +142,30 @@
     const rowError = el("div", "frx-row-error");
     rowError.hidden = true;
     const form = el("form", "frx-form");
-    const input = el("input", "frx-input");
-    // picking a font applies it right away (Apply re-applies)
-    const picker = buildPicker(font, function () { input.hidden = true; form.requestSubmit(); });
+    const picker = el("select", "frx-input frx-picker");
+    picker.setAttribute("aria-label", "System font for " + font.name);
+    const ph = el("option", null, "Pick a system font\u2026");
+    ph.value = "";
+    picker.appendChild(ph);
+    getSystemFonts().forEach(function (name) {
+      const opt = el("option", null, name);
+      opt.value = name;
+      opt.style.fontFamily = GENERIC.has(name) ? name : '"' + name + '"';
+      if (font.overrideSystem === name) opt.selected = true;
+      picker.appendChild(opt);
+    });
+    picker.addEventListener("change", function () {
+      picker.style.fontFamily = picker.value ? '"' + picker.value + '"' : "";
+    });
+    if (font.overrideSystem) picker.style.fontFamily = '"' + font.overrideSystem + '"';
     const applyBtn = el("button", "frx-btn frx-btn--primary", "Apply");
     applyBtn.type = "submit";
-    form.appendChild(picker.node);
+    form.appendChild(picker);
     form.appendChild(applyBtn);
 
     const urlToggle = el("button", "frx-clear frx-url-toggle", "or use a font URL\u2026");
     urlToggle.type = "button";
+    const input = el("input", "frx-input");
     input.type = "url";
     input.placeholder = "https://fonts.googleapis.com/css2?family=...";
     input.value = font.overrideSystem ? "" : (font.overrideTo || "");
@@ -227,7 +176,7 @@
     form.addEventListener("submit", function (ev) {
       ev.preventDefault();
       const url = input.hidden ? "" : input.value.trim();
-      const sys = picker.value();
+      const sys = picker.value;
       rowError.hidden = true;
       if (!url && !sys) {
         rowError.hidden = false;
@@ -344,70 +293,58 @@
     });
   });
 
-  // ---- import every installed font family from the Mac (one-time)
-  const IMPORT_CMD = "system_profiler SPFontsDataType | sed -n 's/^ *Family: //p' | sort -u | pbcopy";
-  const imp = {
-    toggle: document.getElementById("frx-import-toggle"),
-    panel: document.getElementById("frx-import"),
-    cmd: document.getElementById("frx-import-cmd"),
-    copy: document.getElementById("frx-import-copy"),
-    text: document.getElementById("frx-import-text"),
-    save: document.getElementById("frx-import-save"),
-    note: document.getElementById("frx-import-note")
-  };
-  function paintImportToggle() {
-    imp.toggle.textContent = importedFonts.length
-      ? importedFonts.length + " fonts imported \u2014 update"
-      : "Import all my fonts";
-  }
-  imp.cmd.textContent = IMPORT_CMD;
-  imp.toggle.addEventListener("click", function () { imp.panel.hidden = !imp.panel.hidden; });
-  imp.copy.addEventListener("click", function () {
-    navigator.clipboard.writeText(IMPORT_CMD).then(function () { imp.copy.textContent = "Copied!"; });
-  });
-  imp.save.addEventListener("click", async function () {
-    const names = Array.from(new Set(imp.text.value.split(/\r?\n/).map(function (l) { return l.trim(); })
-      .filter(function (l) { return l && l.length < 120 && !/^[.#]/.test(l); })));
-    if (!names.length) { imp.note.textContent = "Paste the list first (run the command, then Cmd+V here)."; return; }
-    await api.storage.local.set({ frxImportedFonts: names });
-    importedFonts = names; systemFonts = null;
-    imp.note.textContent = "Saved " + names.length + " fonts.";
-    imp.text.value = ""; imp.panel.hidden = true;
-    paintImportToggle(); renderFonts();
-  });
-
-  // ---- page styles (Flat / Material / Brutalist / Frutiger Aero / Claymation)
-  const styleBtns = Array.from(document.querySelectorAll(".frx-style"));
-  const styleNone = document.getElementById("frx-style-none");
-  function paintStyle(active) {
-    styleBtns.forEach(function (b) { b.classList.toggle("frx-style--on", b.dataset.style === active); });
-    styleNone.hidden = !active;
-  }
-  function selectStyle(style) {
-    if (typeof tabId !== "number") return;
-    styleBtns.forEach(function (b) { b.disabled = true; });
-    bgSend({ type: "FRX_SELECT_STYLE", tabId: tabId, style: style }).then(function (resp) {
-      styleBtns.forEach(function (b) { b.disabled = false; });
-      if (resp && resp.ok) {
-        paintStyle(resp.style);
-        const label = style ? (styleBtns.find(function (b) { return b.dataset.style === style; }) || {}).textContent : "";
-        // fonts in use change with the style, so rescan, then show the result
-        load().then(function () {
-          setStatus(style ? "Page remixed: " + label + " style." : "Page style removed.", style ? "ok" : "info");
-        });
-      } else {
-        setStatus((resp && resp.error) || "Could not apply the style.", "error");
-      }
+  // ---- style picker
+  function populateStylePicker() {
+    Object.keys(STYLES).forEach(function (key) {
+      const opt = el("option", null, STYLES[key]);
+      opt.value = key;
+      els.stylePicker.appendChild(opt);
     });
   }
-  styleBtns.forEach(function (b) {
-    b.addEventListener("click", function () {
-      selectStyle(b.classList.contains("frx-style--on") ? "" : b.dataset.style);   // click again = off
+
+  function setStyleStatus(message, kind) {
+    if (!message) { els.styleStatus.textContent = ""; return; }
+    els.styleStatus.textContent = message;
+    els.styleStatus.style.color = kind === "error" ? "var(--frx-bad)" : "var(--frx-muted)";
+  }
+
+  async function syncStyle() {
+    const res = await toContent({ type: "FRX_GET_STYLE" });
+    currentStyle = (res && res.ok && res.style) || "";
+    els.stylePicker.value = currentStyle;
+  }
+
+  els.stylePicker.addEventListener("change", function () {
+    const style = els.stylePicker.value;
+    if (!style) {
+      toContent({ type: "FRX_CLEAR_STYLE" }).then(function (res) {
+        if (res && res.ok) { setStyleStatus("Style cleared."); currentStyle = ""; }
+        else setStyleStatus((res && res.error) || "Failed to clear style.", "error");
+      });
+      return;
+    }
+    els.stylePicker.disabled = true;
+    setStyleStatus("Applying " + (STYLES[style] || style) + "\u2026");
+    toContent({ type: "FRX_APPLY_STYLE", style: style }).then(function (res) {
+      els.stylePicker.disabled = false;
+      if (res && res.ok) { currentStyle = style; setStyleStatus("Applied " + (STYLES[style] || style) + "."); }
+      else { setStyleStatus((res && res.error) || "Failed to apply style.", "error"); els.stylePicker.value = currentStyle; }
     });
   });
-  styleNone.addEventListener("click", function () { selectStyle(""); });
 
-  loadImportedFonts().then(function () { paintImportToggle(); return load(); }).then(function () {
-    return toContent({ type: "FRX_GET_STYLE" });
-  }).then(function (r) { if (r && r.ok) paintStyle(r.style); });
+  els.styleClear.addEventListener("click", function () {
+    els.styleClear.disabled = true;
+    toContent({ type: "FRX_CLEAR_STYLE" }).then(function (res) {
+      els.styleClear.disabled = false;
+      if (res && res.ok) { currentStyle = ""; els.stylePicker.value = ""; setStyleStatus("Style cleared."); }
+      else setStyleStatus((res && res.error) || "Failed to clear style.", "error");
+    });
+  });
+
+  populateStylePicker();
+
+  (async function init() {
+    await load();
+    if (tabId !== null) await syncStyle();
+  })();
 })();

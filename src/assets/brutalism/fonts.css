@@ -1,0 +1,18 @@
+/* Brutalism / Neobrutalism - typography tokens */
+:root{
+  --ink:#000;--paper:#FFFDF5;--accent-1:#FFE14D;--accent-2:#FF5C5C;
+  --accent-3:#4D7CFF;--accent-4:#7CF29C;
+  --frx-font-body:'JetBrains Mono','IBM Plex Mono',ui-monospace,'Courier New',monospace;
+  --frx-font-display:'Archivo Black','Space Grotesk',Impact,'Helvetica Neue',sans-serif;
+  --frx-border:3px solid var(--ink);
+  --frx-shadow:6px 6px 0 var(--ink);
+  --frx-radius:0;
+}
+body{font-family:var(--frx-font-body)!important;background:var(--paper)!important;color:var(--ink)!important;line-height:1.5!important;}
+h1,h2,h3,h4,h5,h6{font-family:var(--frx-font-display)!important;text-transform:uppercase!important;font-weight:900!important;letter-spacing:-0.01em!important;line-height:1!important;color:var(--ink)!important;}
+h1{font-size:clamp(40px,6vw,72px)!important;}
+p,li,span,div,a,button,input,textarea,label,td,th{font-family:var(--frx-font-body)!important;}
+a{color:var(--ink)!important;text-decoration:underline!important;text-decoration-thickness:2px!important;text-underline-offset:3px!important;}
+a:hover{background:var(--accent-1)!important;}
+::selection{background:var(--accent-1)!important;color:var(--ink)!important;}
+@media (max-width:768px){h1{font-size:40px!important;}}

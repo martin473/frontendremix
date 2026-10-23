@@ -2,15 +2,12 @@
   "manifest_version": 3,
   "name": "Frontend Remix",
   "version": "1.1.0",
-  "description": "Detect and swap fonts on any page, and remix the whole page with 5 bundled design styles.",
-  "permissions": [
-    "activeTab",
-    "scripting",
-    "storage"
-  ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
+  "description": "Detect and swap rendered fonts on any page, and restyle the web with 5 design systems.",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background/background.js"
+  },
   "action": {
     "default_title": "Frontend Remix",
     "default_popup": "popup/popup.html",
@@ -23,37 +20,17 @@
     "48": "icons/icon-48.png",
     "96": "icons/icon-96.png"
   },
-  "background": {
-    "scripts": [
-      "background/background.js"
-    ]
-  },
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "content/content.js"
-      ],
-      "run_at": "document_idle",
-      "all_frames": false
+      "matches": ["<all_urls>"],
+      "js": ["content/style-engine.js", "content/content.js"],
+      "run_at": "document_idle"
     }
   ],
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "frontend-remix@martin473.github.io",
-      "strict_min_version": "109.0"
-    }
-  },
   "web_accessible_resources": [
     {
-      "resources": [
-        "assets/*/icons/*.svg"
-      ],
-      "matches": [
-        "<all_urls>"
-      ]
+      "resources": ["assets/*", "assets/*/*", "assets/*/*/*"],
+      "matches": ["<all_urls>"]
     }
   ]
 }

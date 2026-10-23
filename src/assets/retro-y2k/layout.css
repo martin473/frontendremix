@@ -1,0 +1,5 @@
+body{max-width:1200px!important;margin:0 auto!important;padding:var(--frx-space-2)!important;}
+main,section,.container,.wrapper{display:block!important;width:100%!important;}
+[class*=grid]{display:grid!important;grid-template-columns:repeat(12,1fr)!important;gap:24px!important;}
+img{max-width:100%!important;height:auto!important;display:block!important;border-radius:16px!important;}
+@media (max-width:768px){[class*=grid]{grid-template-columns:repeat(4,1fr)!important;gap:16px!important;}body{padding:var(--frx-space-1)!important;}}
