@@ -1,0 +1,42 @@
+{
+  "steps": 37,
+  "tool_calls": {
+    "read_file": 16,
+    "run_command": 8,
+    "replace_in_file": 3,
+    "write_file": 3,
+    "append_to_file": 1
+  },
+  "tool_errors": {
+    "run_command": 1
+  },
+  "invalid_args": 0,
+  "plain_text_retries": 5,
+  "gave_up_no_tool_format": false,
+  "loop_warnings": 0,
+  "delayed_responses": 0,
+  "placeholder_tool_calls": 0,
+  "task_complete": true,
+  "signed_out": false,
+  "writes": [
+    1126.4,
+    19763.2,
+    2867.2
+  ],
+  "appends": [
+    2867.2
+  ],
+  "responses": {
+    "count": 0,
+    "median_chars": 0,
+    "p90_chars": 0,
+    "echo_of_own_message": 0,
+    "same_as_previous_reply": 0,
+    "stable_after_one_poll": 0
+  },
+  "tool_calls_total": 31,
+  "write_bytes": 23757,
+  "append_bytes": 2867,
+  "ended": "task_complete",
+  "health": "ok"
+}
