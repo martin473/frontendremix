@@ -293,5 +293,58 @@
     });
   });
 
-  load();
+  // ---- style picker
+  function populateStylePicker() {
+    Object.keys(STYLES).forEach(function (key) {
+      const opt = el("option", null, STYLES[key]);
+      opt.value = key;
+      els.stylePicker.appendChild(opt);
+    });
+  }
+
+  function setStyleStatus(message, kind) {
+    if (!message) { els.styleStatus.textContent = ""; return; }
+    els.styleStatus.textContent = message;
+    els.styleStatus.style.color = kind === "error" ? "var(--frx-bad)" : "var(--frx-muted)";
+  }
+
+  async function syncStyle() {
+    const res = await toContent({ type: "FRX_GET_STYLE" });
+    currentStyle = (res && res.ok && res.style) || "";
+    els.stylePicker.value = currentStyle;
+  }
+
+  els.stylePicker.addEventListener("change", function () {
+    const style = els.stylePicker.value;
+    if (!style) {
+      toContent({ type: "FRX_CLEAR_STYLE" }).then(function (res) {
+        if (res && res.ok) { setStyleStatus("Style cleared."); currentStyle = ""; }
+        else setStyleStatus((res && res.error) || "Failed to clear style.", "error");
+      });
+      return;
+    }
+    els.stylePicker.disabled = true;
+    setStyleStatus("Applying " + (STYLES[style] || style) + "\u2026");
+    toContent({ type: "FRX_APPLY_STYLE", style: style }).then(function (res) {
+      els.stylePicker.disabled = false;
+      if (res && res.ok) { currentStyle = style; setStyleStatus("Applied " + (STYLES[style] || style) + "."); }
+      else { setStyleStatus((res && res.error) || "Failed to apply style.", "error"); els.stylePicker.value = currentStyle; }
+    });
+  });
+
+  els.styleClear.addEventListener("click", function () {
+    els.styleClear.disabled = true;
+    toContent({ type: "FRX_CLEAR_STYLE" }).then(function (res) {
+      els.styleClear.disabled = false;
+      if (res && res.ok) { currentStyle = ""; els.stylePicker.value = ""; setStyleStatus("Style cleared."); }
+      else setStyleStatus((res && res.error) || "Failed to clear style.", "error");
+    });
+  });
+
+  populateStylePicker();
+
+  (async function init() {
+    await load();
+    if (tabId !== null) await syncStyle();
+  })();
 })();
